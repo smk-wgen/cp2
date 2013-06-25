@@ -1,0 +1,34 @@
+@(title: String)(content: Html)
+
+<!DOCTYPE html>
+
+<html ng-app="xmpl">
+    <head>
+        <title>@title</title>
+
+      @common.apply()
+
+
+    </head>
+    <body>
+        @content
+        <script type="text/javascript" src="http://platform.linkedin.com/in.js">
+            api_key: 91zpl9j92hr9
+            onLoad: onLinkedInLoad
+            authorize: false
+        </script>
+        <script type="in/Login">
+        </script>
+        <script type="text/javascript">
+            function onLinkedInLoad(){
+                   console.log("LinkedIn script has loaded");
+                   IN.Event.on(IN, "auth", onLinkedInAuth);
+            }
+            function onLinkedInAuth(){
+                console.log("User has been authenticated");
+                IN.API.Profile("me").result(displayProfiles);
+            }
+
+        </script>
+    </body>
+</html>
