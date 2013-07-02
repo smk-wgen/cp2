@@ -6,6 +6,9 @@
 GET     /                           controllers.Application.index
 GET    /dashboard                   controllers.Application.dashboard
 
+POST   /user                        controllers.Application.postMessage
+POST   /address                     controllers.Application.postAddress
+
 # Javascript routing
 GET     /assets/javascripts/routes          controllers.Application.javascriptRoutes
 

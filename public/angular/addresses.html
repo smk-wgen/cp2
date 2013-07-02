@@ -1,9 +1,34 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-
-</body>
-</html>
+<div id="addressesDiv" ng-controller="AddressController">
+    <ul>
+        <li ng-repeat="address in addresses">
+            [{{$index + 1}}] {{address.name}}
+        </li>
+    </ul>
+    <form name="addressForm">
+        <label>Address:</label> <br/>
+        <label>Address Name:</label><input type="text" name="name" size="33" required
+                   ng-model="address.name"/> <br/>
+        <label>Line1:</label><input type="text" name="line1" size="33" required
+        ng-model="address.line1"/> <br/>
+        <label>Address Line2:</label><input type="text" name="line2" size="33" required
+                   ng-model="address.line2"/> <br/>
+        <label>City:</label><input type="text" name="city" size="12" required
+        ng-model="address.city"/>,
+        <label>State:</label><input type="text" name="state" ng-pattern="state" size="2" required
+        ng-model="address.state"/>
+        <label>Zip:</label><input type="text" name="zip" ng:pattern="zip" size="5" required
+        ng-model="address.zip"/><br/><br/>
+        <input type="button" value="Add" ng-click="addAddress()"/>
+    <!--<span class="error" ng-show="addressForm.$invalid">-->
+    <!--Incomplete address:-->
+    <!--<span class="error" ng-show="addressForm.state.$error.REQUIRED">-->
+    <!--Missing state!</span>-->
+    <!--<span class="error" ng-show="addressForm.state.$error.PATTERN">-->
+    <!--Invalid state!</span>-->
+    <!--<span class="error" ng-show="addressForm.zip.$error.REQUIRED">-->
+    <!--Missing zip!</span>-->
+    <!--<span class="error" ng-show="addressForm.zip.$error.PATTERN">-->
+    <!--Invalid zip!</span>-->
+    <!--</span>-->
+    </form>
+</div>

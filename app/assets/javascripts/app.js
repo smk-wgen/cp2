@@ -9,10 +9,6 @@ angular.module('xmpl', [/*, 'xmpl.directive', 'xmpl.filter'*/])
         })
     })*/;
 
-angular.module('profiler',[]);
+angular.module('profiler',['profiler.controllers']);
 // A Controller for your app
-var ProfileController = function($scope) {
-    'use strict';
-    console.log("In the profile controller");
-}
-ProfileController.$inject = ['$scope'];
+

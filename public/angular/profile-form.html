@@ -1,49 +1,26 @@
-<div id="userProfileDiv" ng-app="profiler">
+<div id="userProfileDiv">
     <div class="span3" ng-controller="ProfileController">
           This is where I will be entering my profile info
         <form name="userForm">
 
-            <label>Name:</label><br/>
-              <p ng-model="form.user.name">Name (Linkedin)</p>
-              <p ng-model="form.user.employer">Employer(LinkedIn)</p>
-              <p ng-model="form.user.city"> City(LinkedIn)</p>
+
+              Name : <p>{{userName}}</p>
+              Employer: <p>{{userEmployer}}</p>
+              City: <p> {{userCity}}</p>
               Gender?
-            <input type="radio" ng-model="form.sex" value="male">Male
-            <input type="radio" ng-model="form.sex" value="female" class="clearfix">Female
-             Email : <input type="text" ng-model="form.user.email" required/>
-             Cell Phone : <input type="text" ng-model="form.user.mobile" required/>
+            <input type="radio" ng-model="user.sex" value="male">Male
+            <input type="radio" ng-model="user.sex" value="female" class="clearfix">Female
+             Email : <input type="text" ng-model="user.email" required/>
+             Cell Phone : <input type="text" ng-model="user.mobile" required/>
 
 
             <br/><br/>
 
-            <ng-form name="addressForm">
-                <label>Address:</label> <br/>
-                <input type="text" name="line1" size="33" required
-                       ng-model="form.address.line1"/> <br/>
-                <input type="text" name="city" size="12" required
-                       ng-model="form.address.city"/>,
-                <input type="text" name="state" ng-pattern="state" size="2" required
-                       ng-model="form.address.state"/>
-                <input type="text" name="zip" ng:pattern="zip" size="5" required
-                       ng-model="form.address.zip"/><br/><br/>
 
-               <span class="error" ng-show="addressForm.$invalid">
-                 Incomplete address:
-                 <span class="error" ng-show="addressForm.state.$error.REQUIRED">
-                   Missing state!</span>
-                 <span class="error" ng-show="addressForm.state.$error.PATTERN">
-                   Invalid state!</span>
-                 <span class="error" ng-show="addressForm.zip.$error.REQUIRED">
-                   Missing zip!</span>
-                 <span class="error" ng-show="addressForm.zip.$error.PATTERN">
-                   Invalid zip!</span>
-               </span>
-            </ng-form>
 
-            <button ng-click="cancel()"
-                    ng-disabled="{{isCancelDisabled()}}">Cancel</button>
-            <button ng-click="save()"
-                    ng-disabled="{{isSaveDisabled()}}">Save</button>
+
+            <button ng-click="submitProfile()">Save</button>
         </form>
+
     </div>
 </div>
