@@ -7,6 +7,8 @@ import play.api.Play.current
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
 
+import scala.Long
+
 /**
  * Created by skunnumkal on 7/1/13.
  */
@@ -16,9 +18,7 @@ case class User(id: Pk[Long],email: String, name: String, linkedInId: String,cel
              city:String,gender:String) = this(Id(0),email,name,linkedInId,cell,imageUrl,employer,city,gender)
 }
 object User{
-  /**
-   * Create a User.
-   */
+
   implicit val userReads = (
     (__ \ "id").read(PkReader) and
       (__ \ "email").read[String] and
@@ -52,36 +52,60 @@ object User{
 
 
   implicit object PkWriter extends Writes[Pk[Long]]{
-    def writes(id:Pk[Long]):JsValue = new JsNumber(id.get)
-  }
-  def create(user: User): User = {
-    DB.withConnection { implicit connection =>
-
-    // Get the user id
-      val id: Long = user.id.getOrElse {
-        SQL("select next value for task_seq").as(scalar[Long].single)
-      }
-
-      SQL(
-        """
-          insert into user values (
-            {id}, {email}, {name}, {linkedInId}, {cell}, {imageUrl}, {employer},{city},{gender}
-          )
-        """
-      ).on(
-        'id -> id,
-        'email -> user.email,
-        'name -> user.name,
-        'linkedInId -> user.linkedInId,
-        'cell -> user.cell,
-        'imageUrl -> user.imageUrl,
-        'employer -> user.employer,
-        'city -> user.city,
-        'gender -> user.gender
-      ).executeUpdate()
-
-      user.copy(id = Id(id))
-
+    def writes(id:Pk[Long]):JsValue = {
+      val l:Long = id.getOrElse(0)
+      JsNumber(l)
     }
   }
+  /**
+   * Parse a User from a ResultSet
+   */
+  val userDBRecordParser = {
+    get[Pk[Long]]("user.id") ~
+      get[String]("user.name") ~
+      get[String]("user.email") ~
+      get[String]("user.city") ~
+      get[String]("user.gender") ~
+      get[String]("user.cell") ~
+      get[String]("user.employer") ~
+      get[String]("user.imageUrl") ~
+      get[String]("user.linkedInId") map {
+      case id~name~email~city~gender~cell~employer~imageUrl~linkedInId =>
+        User(id, email, name, linkedInId,cell, imageUrl, employer,city,gender)
+    }
+  }
+
+  def create(user:User):User = {
+    DB.withConnection {
+      implicit connection =>
+        val maybeId:Option[Long] = SQL("insert into user(name, email,linkedInId, imageUrl, employer,city,gender,cell) " +
+          "values ({name}, {email}, {linkedInId}, {imageUrl}, {employer}, {city}, {gender},{cell});").on(
+          'name -> user.name,
+          'email -> user.email,
+          'linkedInId -> user.linkedInId,
+          'imageUrl -> user.imageUrl,
+          'employer -> user.employer,
+          'city -> user.city,
+          'gender -> user.gender,
+            'cell -> user.cell
+        ).executeInsert()
+        maybeId match{
+          case Some(num) => System.out.println("Long val " + num)
+          case None => System.out.println("Error ")
+        }
+        val dbUser:User = user.copy(id = Id(maybeId.get))
+
+        dbUser
+    }
+  }
+
+  def findById(id:Long):Option[User] = {
+    DB.withConnection { implicit connection =>
+      SQL("select * from user where id = {id}").on(
+        'id -> id
+      ).as(User.userDBRecordParser.singleOpt)
+    }
+  }
+
+
 }

@@ -23,18 +23,28 @@ object Application extends Controller {
   }
 
   /** Controller action for POSTing chat messages */
-    def postMessage = Action(parse.json) { request =>
-    request.body.validate[User].map{
-      //case (email,name, linkedInId,cell,imageUrl,employer,city,gender) => {
-      //val user: JsResult[User] =
-      case (user:User) => {
-          //User user = new User(NotAssigned,email,name,linkedInId,cell,imageUrl,employer,city,gender)
-          User.create(user)
+    def postMessage = Action(parse.json) {
+    request =>
+    val json = request.body
+    System.out.println(json)
+    json.validate[User].fold(
+      valid = (user => {
+            System.out.println(user)
+            val dbUser = User.create(user)
+            Ok(Json.toJson(dbUser))
+      }),
+      invalid = (e => {
 
-        Ok(Json.toJson(user))
-      }
-    }.recoverTotal{
-      e => BadRequest("Detected error:"+ JsError.toFlatJson(e))
+            BadRequest("Detected error:"+ JsError.toFlatJson(e))
+      })
+    )
+  }
+
+  def findUser(id:Long) = Action{
+    val maybeUser:Option[User] = User.findById(id)
+    maybeUser match{
+      case Some(user) => Ok(Json.toJson(user))
+      case None => BadRequest("Domain Record Not Found")
     }
   }
 

@@ -27,13 +27,19 @@ angular.module('profiler.controllers', []).
        $scope.userName = "Name From Linkedin";
        $scope.userEmployer = "Employer (from LinkedIn)";
        $scope.userCity = "City (from LinkedIn)";
+       $scope.imageUrl = "imgsrc";
+       $scope.linkedInId = "www.linkedin.com";
+       $scope.email = "abc@example.com";
+       $scope.sex = "male";
+       $scope.mobile = "000-000-0000";
 
        $scope.submitProfile = function(){
 
          console.log('In profile submit');
          console.log($scope.user);
-           $http.post("/user", { name: $scope.userName, employer: $scope.userEmployer,
-               city: $scope.userCity, sex: $scope.user.sex , email : $scope.user.email , cell : $scope.user.mobile})
+           $http.post("/user", { id: '',name: $scope.userName, employer: $scope.userEmployer,
+               city: $scope.userCity, gender: $scope.sex , email : $scope.email , cell : $scope.mobile,
+           imageUrl : $scope.imageUrl, linkedInId : $scope.linkedInId})
                .success(function(data){
                    console.log(data);
                    //make rest of the page visible
