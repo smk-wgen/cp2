@@ -2,20 +2,34 @@
  * Created by skunnumkal on 6/30/13.
  */
 
-angular.module('profiler.controllers', []).
+angular.module('profiler.controllers', ['appServices']).
     //controller('ChatCtrl', function ($scope, $http, chatModel) {
     //
-    controller('AddressController',function($scope,$http){
+    controller('AddressController',function($scope,$http,addressService){
        'use strict';
-        $scope.addresses = [];
+        $scope.$watch('addressService.myAddresses',function(newValue,oldValue){
+                 console.log('Addresses changed');
+        });
+        $scope.addresses = addressService.getUserAddresses();
         $scope.userId = "1"; //get this from a service
+        $scope.line1 = "Street name";
+        $scope.label = "Label of Address";
+        $scope.line2 = '';
+        $scope.city = "Chewburg";
+        $scope.state = "PA";
+        $scope.zip = "10944";
         $scope.addAddress = function(){
-            $http.post("/address", { name: $scope.address.name, addressLine1: $scope.address.line1,
-                addressLine2: $scope.address.line1, city: $scope.address.city , zip : $scope.address.line1 ,
+            $http.post("/address", { label: $scope.label, line1: $scope.line1,
+                line2: $scope.line2, city: $scope.city , zip : $scope.zip , state : $scope.state,
                 userId : $scope.userId})
                 .success(function(data){
                     console.log(data);
-                    $scope.addresses.push({name:$scope.address.name});
+                    //$scope.addresses.push({name:$scope.label});
+                    addressService.addAddress({
+                        label : $scope.label, line1: $scope.line1,
+                        line2: $scope.line2, city: $scope.city , zip : $scope.zip , state : $scope.state,
+                        userId : $scope.userId
+                    });
                     //make rest of the page visible
 
                 });
@@ -49,6 +63,16 @@ angular.module('profiler.controllers', []).
 
 
     };
+
+    }).controller('CommuteTimeController',function($scope,$http,addressService){
+        'use strict';
+         $scope.startTime = 420;
+         $scope.endTime = 570;
+         $scope.startTime = startTime;
+         $scope.endTime = endTime;
+         $scope.ucas = addressService.myAddresses;
+         console.log('Addresses #',$scope.ucas);
+         console.log("Start time",$scope.startTime);
 
     });
 

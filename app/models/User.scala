@@ -15,7 +15,7 @@ import scala.Long
 case class User(id: Pk[Long],email: String, name: String, linkedInId: String,cell:String,imageUrl:String,employer:String,
                  city:String,gender:String){
     def this(email: String, name: String, linkedInId: String,cell:String,imageUrl:String,employer:String,
-             city:String,gender:String) = this(Id(0),email,name,linkedInId,cell,imageUrl,employer,city,gender)
+             city:String,gender:String) = this(NotAssigned,email,name,linkedInId,cell,imageUrl,employer,city,gender)
 }
 object User{
 

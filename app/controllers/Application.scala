@@ -2,8 +2,9 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models.User
+import models.{UserAddress, User}
 import play.api.libs.json._
+import datamappers.UserAddressMapper
 
 object Application extends Controller {
   
@@ -48,6 +49,22 @@ object Application extends Controller {
     }
   }
 
-    def postAddress = Action(parse.json) {req => Ok }
+    def postAddress = Action(parse.json) {req =>
+      val json = req.body
+      System.out.println("Json is " + json)
+      val maybeUserAddress:Option[UserAddress] = UserAddressMapper.mapJsonToUserAddress(json)
+      System.out.println(maybeUserAddress.get)
+      maybeUserAddress match{
+        case Some(userAddress) => {
+          val dbAddress = UserAddress.create(userAddress)
+          Ok(UserAddressMapper.mapUserAddressToJson(dbAddress))
+        }
+        case None => BadRequest("shit blew up")
+      }
+
+
+    }
+
+
   
 }
