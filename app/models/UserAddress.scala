@@ -6,6 +6,9 @@ import play.api.db.DB
 import play.api.libs.functional.syntax._
 import scala.Some
 import play.api.Play.current
+import anorm.SqlParser._
+import anorm.~
+import anorm.Id
 
 /**
  * Created by skunnumkal on 7/1/13.
@@ -36,6 +39,27 @@ object UserAddress{
 
 
 
+    }
+  }
+  def findById(id:Long):Option[UserAddress] = {
+    DB.withConnection { implicit connection =>
+      SQL("select * from user_address where id = {id}").on(
+        'id -> id
+      ).as(UserAddress.userAddressDBRecordParser.singleOpt)
+    }
+  }
+
+  val userAddressDBRecordParser = {
+    get[Pk[Long]]("user_address.id") ~
+    get[String]("user_address.label") ~
+      get[String]("user_address.line1") ~
+      get[String]("user_address.line2") ~
+      get[String]("user_address.city") ~
+      get[String]("user_address.state")~
+      get[Int]("user_address.zip")~
+      get[Long]("user_address.user_id")map {
+      case id~label~line1~line2~city~state~zip~userId =>
+        UserAddress(id, label,line1, line2, city,state, zip,User.findById(userId).get)
     }
   }
 }

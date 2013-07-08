@@ -9,6 +9,7 @@ GET         /user/:id                         controllers.Application.findUser(i
 
 POST        /user                             controllers.Application.postMessage
 POST        /address                          controllers.Application.postAddress
+POST        /usercommute                      controllers.Application.postCommute
 
 # Javascript routing
 GET         /assets/javascripts/routes        controllers.Application.javascriptRoutes

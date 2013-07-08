@@ -2,9 +2,9 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models.{UserAddress, User}
+import models.{UserCommute, UserAddress, User}
 import play.api.libs.json._
-import datamappers.UserAddressMapper
+import datamappers.{UserCommuteMapper, UserAddressMapper}
 
 object Application extends Controller {
   
@@ -63,6 +63,18 @@ object Application extends Controller {
       }
 
 
+    }
+
+    def postCommute = Action(parse.json){ req =>
+        val json = req.body
+        val maybeCommute:Option[UserCommute] = UserCommuteMapper.mapJsonToUserCommute(json)
+      maybeCommute match{
+        case Some(commute) => {
+          val dbCommute = UserCommute.create(commute)
+          Ok(UserCommuteMapper.mapUserCommuteToJson(dbCommute))
+        }
+        case None => BadRequest("shit blew up")
+      }
     }
 
 

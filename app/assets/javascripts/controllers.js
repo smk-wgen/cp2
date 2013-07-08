@@ -37,7 +37,7 @@ angular.module('profiler.controllers', ['appServices']).
     }).
     controller('ProfileController',function($scope,$http){
       'use strict';
-       console.log('In profile controller');
+
        $scope.userName = "Name From Linkedin";
        $scope.userEmployer = "Employer (from LinkedIn)";
        $scope.userCity = "City (from LinkedIn)";
@@ -49,7 +49,7 @@ angular.module('profiler.controllers', ['appServices']).
 
        $scope.submitProfile = function(){
 
-         console.log('In profile submit');
+
          console.log($scope.user);
            $http.post("/user", { id: '',name: $scope.userName, employer: $scope.userEmployer,
                city: $scope.userCity, gender: $scope.sex , email : $scope.email , cell : $scope.mobile,
@@ -66,13 +66,31 @@ angular.module('profiler.controllers', ['appServices']).
 
     }).controller('CommuteTimeController',function($scope,$http,addressService){
         'use strict';
-         $scope.startTime = 420;
-         $scope.endTime = 570;
-         $scope.startTime = startTime;
-         $scope.endTime = endTime;
+         $scope.startTime = startTime || 420;
+         $scope.endTime = endTime || 570;
+         $scope.userId = 1;
+
+
          $scope.ucas = addressService.myAddresses;
-         console.log('Addresses #',$scope.ucas);
-         console.log("Start time",$scope.startTime);
+
+        $scope.startaddress = '';
+        $scope.endaddress = '';
+
+        $scope.isNotSameAsStart = function(address){
+            return $scope.startaddress.label !== address.label;
+        };
+        $scope.submitCommute = function(){
+            $scope.startTimeAsInt = $("#slider-range").slider("values", 0);
+            $scope.endTimeAsInt = $("#slider-range").slider("values", 1);
+            console.log($scope.startTime,$scope.endTime,$scope.startaddress,$scope.startTimeAsInt,$scope.endTimeAsInt);
+            $http.post("/usercommute", { id: '',startAddress: $scope.startaddress.id, endaddress: $scope.endaddress.id,
+                startTime: $scope.startTime, endTime: $scope.endTime , userId : $scope.userId })
+                .success(function(data){
+                    console.log(data);
+                    //make rest of the page visible
+
+                });
+        };
 
     });
 

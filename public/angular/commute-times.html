@@ -1,28 +1,29 @@
-<p ng-controller="CommuteTimeController">
+<div ng-controller="CommuteTimeController">
 
-    <label for="time"></label>
-    {{ucas}}
-    <input type="text" id="time" style="border: 0; color: #f6931f; font-weight: bold;" />
+
+    Select a commute time
+    <p id="time"></p>
+
     <div id="slider-range"></div>
     <form>
-        <fieldset>
-            <legend>Selecting addresses</legend>
-            <p>
-                <label>Select start address</label>
-
-                <select id = "startAddressId" ng-model="startAddress" ng-options="uca as uca.label for uca in ucas">
 
 
-                </select>
-                <label>Select end address</label>
-                <select id = "endAddressId" ng-model="endAddress" ng-options="uca as uca.label for uca in ucas">
+                Select start address
 
 
-                </select>
-            </p>
-        </fieldset>
+                    <select ng-model="startaddress" ng-options="c.label for c in ucas"></select><br>
+        Select end address
+                    <select ng-model="endaddress" ng-options="c.label for c in ucas | filter:isNotSameAsStart"></select><br>
+                <!--<label>Select end address</label>-->
+                <!--<select id = "endAddressId" ng-model="endAddress" ng-options="uca as uca.label for uca in ucas">-->
+
+        <button ng-click="submitCommute()">Save</button>
+
+
+
     </form>
-</p>
+
+</div>
 
 
 <script>
@@ -44,8 +45,9 @@
                 hours1 = parseInt(val1 / 60 % 24, 10);
             startTime = getTime(hours0, minutes0);
             endTime = getTime(hours1, minutes1);
-            //console.log(startTime," - ", endTime);
-            $('#sta')
+
+            console.log(startTime," - ", endTime);
+
             $("#time").text(startTime + ' - ' + endTime);
         }
         function getTime(hours, minutes) {
