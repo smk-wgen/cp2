@@ -4,8 +4,12 @@ import anorm._
 import play.api.db.DB
 import play.api.Play.current
 import anorm.SqlParser._
+import play.api.libs.functional.syntax._
+import models.User.{PkWriter, PkReader}
+import play.api.libs.json._
 import anorm.~
 import anorm.Id
+import scala.Some
 
 /**
  * Created by skunnumkal on 7/8/13.
@@ -15,7 +19,25 @@ case class UserCommute(id: Pk[Long],startTime:Int,endTime:Int,startAddress:Long,
 
 object UserCommute{
 
-  def create(userCommute:UserCommute):UserCommute = {
+  implicit val commuteReads = (
+    (__ \ "id").read(PkReader) and
+      (__ \ "startTime").read[Int] and
+      (__ \ "endTime").read[Int] and
+      (__ \"startAddress").read[Long] and
+      (__  \ "endAddress").read[Long] and
+      (__ \ "user").read[Long]
+    )(UserCommute.apply _)
+
+  implicit val commuteWrites = (
+    (__ \ "id").write(PkWriter) and
+      (__ \ "startTime").write[Int] and
+      (__ \ "endTime").write[Int] and
+      (__ \"startAddress").write[Long] and
+      (__  \ "endAddress").write[Long] and
+      (__ \ "user").write[Long]
+    )(unlift(UserCommute.unapply))
+
+  def create(userCommute:UserCommute):Option[UserCommute] = {
     DB.withConnection {
       implicit connection =>
         val maybeId:Option[Long] = SQL("insert into user_commute(window_start, window_end,from_address, to_address, user_id) " +
@@ -28,9 +50,11 @@ object UserCommute{
 
 
         ).executeInsert()
-
-        val dbCommute:UserCommute = userCommute.copy(id = Id(maybeId.get))
-        dbCommute
+        val maybeCommute = maybeId match {
+          case Some(id) => Some(userCommute.copy(id = Id(maybeId.get)))
+          case _ => None
+        }
+        maybeCommute
     }
   }
 

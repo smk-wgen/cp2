@@ -4,7 +4,8 @@ import play.api._
 import play.api.mvc._
 import models.{UserCommute, UserAddress, User}
 import play.api.libs.json._
-import datamappers.{UserCommuteMapper}
+
+
 
 object Application extends Controller {
   
@@ -68,16 +69,16 @@ object Application extends Controller {
 
     def postCommute = Action(parse.json){ req =>
         val json = req.body
-        val maybeCommute:Option[UserCommute] = UserCommuteMapper.mapJsonToUserCommute(json)
-      maybeCommute match{
-        case Some(commute) => {
-          val dbCommute = UserCommute.create(commute)
-          Ok(UserCommuteMapper.mapUserCommuteToJson(dbCommute))
-        }
-        case None => BadRequest("shit blew up")
-      }
+        json.validate[UserCommute].fold(
+        valid = (validCommute => {
+          val dbCommute = UserCommute.create(validCommute)
+          dbCommute match{
+            case Some(storedCommute) => Ok(Json.toJson(storedCommute))
+            case None => ServiceUnavailable("Internal Server error")
+          }
+        }),
+        invalid = (e => {BadRequest("Detected error " + JsError.toFlatJson(e))})
+        )
     }
 
-
-  
 }
