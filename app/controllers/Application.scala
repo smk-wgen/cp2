@@ -4,7 +4,7 @@ import play.api._
 import play.api.mvc._
 import models.{UserCommute, UserAddress, User}
 import play.api.libs.json._
-import datamappers.{UserCommuteMapper, UserAddressMapper}
+import datamappers.{UserCommuteMapper}
 
 object Application extends Controller {
   
@@ -52,15 +52,16 @@ object Application extends Controller {
     def postAddress = Action(parse.json) {req =>
       val json = req.body
       System.out.println("Json is " + json)
-      val maybeUserAddress:Option[UserAddress] = UserAddressMapper.mapJsonToUserAddress(json)
-      System.out.println(maybeUserAddress.get)
-      maybeUserAddress match{
-        case Some(userAddress) => {
-          val dbAddress = UserAddress.create(userAddress)
-          Ok(UserAddressMapper.mapUserAddressToJson(dbAddress))
-        }
-        case None => BadRequest("shit blew up")
-      }
+      json.validate[UserAddress].fold(
+       valid  = (address => {
+              val dbAddress = UserAddress.create(address)
+              dbAddress match {
+                case Some(storedAddress) => Ok(Json.toJson(storedAddress))
+                case None => BadRequest("Internal server error")
+              }
+       }),
+      invalid = (e => {BadRequest("Detected error " + JsError.toFlatJson(e))})
+      )
 
 
     }

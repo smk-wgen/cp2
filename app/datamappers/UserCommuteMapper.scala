@@ -24,7 +24,7 @@ object UserCommuteMapper {
           None
         }
           else{
-          Some(UserCommute(NotAssigned,startTime,endTime,startAddress,endAddress,user))
+          Some(UserCommute(NotAssigned,startTime,endTime,startAddressId,endAddressId,userId))
         }
 
   }
@@ -34,9 +34,9 @@ object UserCommuteMapper {
       "id" -> userCommute.id.get,
       "startTime" -> userCommute.startTime,
       "endTime" -> userCommute.endTime,
-      "startAddress" -> UserAddressMapper.mapUserAddressToJson(userCommute.startAddress),
-      "endAddress" -> UserAddressMapper.mapUserAddressToJson(userCommute.endAddress),
-      "userId" -> userCommute.user.id.get
+      "startAddress" -> userCommute.startAddress,
+      "endAddress" -> userCommute.endAddress,
+      "userId" -> userCommute.user
     )
     json
   }

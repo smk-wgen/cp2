@@ -9,17 +9,38 @@ import play.api.Play.current
 import anorm.SqlParser._
 import anorm.~
 import anorm.Id
+import models.User.{PkWriter, PkReader}
 
 /**
  * Created by skunnumkal on 7/1/13.
  */
-case class UserAddress(id: Pk[Long],label:String,line1:String,line2:String,city:String,state:String,zip:Int,user:User)
+case class UserAddress(id: Pk[Long],label:String,line1:String,line2:String,city:String,state:String,zip:Int,user:Long)
 
 object UserAddress{
 
+  implicit val addressReads = (
+    (__ \ "id").read(PkReader)   and
+      (__ \ "label").read[String] and
+      (__ \ "line1").read[String] and
+      (__ \ "line2").read[String] and
+      (__ \ "city").read[String] and
+      (__ \ "state").read[String] and
+      (__ \ "zip").read[Int] and
+      (__ \ "user").read[Long]
+    )(UserAddress.apply _)
 
+  implicit val addressWrites = (
+    (__ \ "id").write(PkWriter)   and
+      (__ \ "label").write[String] and
+      (__ \ "line1").write[String] and
+      (__ \ "line2").write[String] and
+      (__ \ "city").write[String] and
+      (__ \ "state").write[String] and
+      (__ \ "zip").write[Int] and
+      (__ \ "user").write[Long]
+    )(unlift(UserAddress.unapply))
 
-  def create(address:UserAddress):UserAddress = {
+  def create(address:UserAddress):Option[UserAddress] = {
     DB.withConnection {
       implicit connection =>
         val maybeId:Option[Long] = SQL("insert into user_address(line1, line2,city, state, zip,user_id) " +
@@ -29,16 +50,15 @@ object UserAddress{
           'city -> address.city,
           'state -> address.state,
           'zip -> address.zip,
-          'userId -> address.user.id
+          'userId -> address.user
 
         ).executeInsert()
+      val maybeAddress:Option[UserAddress] = maybeId match {
+        case Some(id) =>  Some(address.copy(id = Id(maybeId.get)))
+        case None => None
+      }
 
-        val dbAddress:UserAddress = address.copy(id = Id(maybeId.get))
-        dbAddress
-
-
-
-
+       maybeAddress
     }
   }
   def findById(id:Long):Option[UserAddress] = {
@@ -59,7 +79,7 @@ object UserAddress{
       get[Int]("user_address.zip")~
       get[Long]("user_address.user_id")map {
       case id~label~line1~line2~city~state~zip~userId =>
-        UserAddress(id, label,line1, line2, city,state, zip,User.findById(userId).get)
+        UserAddress(id, label,line1, line2, city,state, zip,userId)
     }
   }
 }
