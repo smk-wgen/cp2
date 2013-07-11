@@ -67,6 +67,13 @@ object UserCommute{
     }
   }
 
+  def findAllCommutes:List[UserCommute] = {
+    DB.withConnection {   implicit  connection =>
+      SQL(
+        "select * from user_commute").as(UserCommute.userCommuteDBRecordParser *)
+    }
+  }
+
 
   val userCommuteDBRecordParser = {
     get[Pk[Long]]("user_commute.id") ~

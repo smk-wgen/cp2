@@ -4,7 +4,7 @@ import play.api._
 import play.api.mvc._
 import models.{UserCommute, UserAddress, User}
 import play.api.libs.json._
-
+import services.MatchingService
 
 
 object Application extends Controller {
@@ -79,6 +79,15 @@ object Application extends Controller {
         }),
         invalid = (e => {BadRequest("Detected error " + JsError.toFlatJson(e))})
         )
+    }
+
+    def getMatches(id:Long) = Action {
+
+     val commutes:List[UserCommute] = UserCommute.findCommuteByUserId(id)
+     val allCommutes:List[UserCommute] = UserCommute.findAllCommutes
+     val matchingCommutes:List[UserCommute] = MatchingService.getMatches(commutes,allCommutes)
+      Ok(Json.toJson(matchingCommutes))
+
     }
 
 }
