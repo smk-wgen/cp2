@@ -81,12 +81,20 @@ object Application extends Controller {
         )
     }
 
-    def getMatches(id:Long) = Action {
+    def getCommuteMatches(commuteId:Long) = Action {
 
-     val commutes:List[UserCommute] = UserCommute.findCommuteByUserId(id)
-     val allCommutes:List[UserCommute] = UserCommute.findAllCommutes
-     val matchingCommutes:List[UserCommute] = MatchingService.getMatches(commutes,allCommutes)
-      Ok(Json.toJson(matchingCommutes))
+     val commute:Option[UserCommute] = UserCommute.findById(commuteId)
+     commute match{
+       case Some(dbCommute) => {
+         val allCommutes:List[UserCommute] = UserCommute.findAllCommutes
+         val matchingCommutes:List[UserCommute] = MatchingService.getMatches(dbCommute,allCommutes)
+         Ok(Json.toJson(matchingCommutes))
+       }
+       case _ => BadRequest("Didnt find the record")
+     }
+
+
+
 
     }
 

@@ -67,6 +67,14 @@ object UserCommute{
     }
   }
 
+  def findById(id:Long):Option[UserCommute] = {
+    DB.withConnection { implicit connection =>
+      SQL("select * from user where id = {id}").on(
+        'id -> id
+      ).as(UserCommute.userCommuteDBRecordParser.singleOpt)
+    }
+  }
+
   def findAllCommutes:List[UserCommute] = {
     DB.withConnection {   implicit  connection =>
       SQL(
