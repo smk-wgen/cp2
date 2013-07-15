@@ -93,9 +93,19 @@ object Application extends Controller {
        case _ => BadRequest("Didnt find the record")
      }
 
-
-
-
     }
+
+  def getProfile(id:Long) = Action {
+
+       val maybeUser = User.findById(id)
+       maybeUser match{
+         case Some(user) => {
+          val commutes = UserCommute.findCommuteByUserId(user.id.get)
+
+           Ok(views.html.profile(user))
+         }
+         case _ => BadRequest("Couldnt find user")
+        }
+  }
 
 }

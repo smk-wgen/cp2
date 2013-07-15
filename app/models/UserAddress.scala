@@ -69,6 +69,14 @@ object UserAddress{
     }
   }
 
+  def findAddressesByUser(id:Long):List[UserAddress] = {
+    DB.withConnection {   implicit  connection =>
+      SQL(
+        "select * from user_address where user_id = {user_id}").on(
+        'user_id -> id
+      ).as(UserAddress.userAddressDBRecordParser *)
+    }
+  }
   val userAddressDBRecordParser = {
     get[Pk[Long]]("user_address.id") ~
     get[String]("user_address.label") ~
