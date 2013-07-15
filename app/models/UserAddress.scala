@@ -25,9 +25,27 @@ object UserAddress{
       (__ \ "line2").read[String] and
       (__ \ "city").read[String] and
       (__ \ "state").read[String] and
-      (__ \ "zip").read[Int] and
-      (__ \ "user").read[Long]
+      (__ \ "zip").read(StringToIntReader) and
+      (__ \ "userId").read(StringToLongReader)
     )(UserAddress.apply _)
+
+  implicit object StringToIntReader extends Reads[Int] {
+    def reads(js:JsValue):JsResult[Int] = js match{
+      case JsNumber(a) => JsSuccess(a.intValue)
+      case JsString(x) => JsSuccess(x.toInt)
+      case _ => JsError("This is neither a string nor number")
+
+    }
+  }
+
+  implicit object StringToLongReader extends Reads[Long] {
+    def reads(js:JsValue):JsResult[Long] = js match{
+      case JsNumber(a) => JsSuccess(a.longValue())
+      case JsString(x) => JsSuccess(x.toLong)
+      case _ => JsError("This is neither a string nor number")
+
+    }
+  }
 
   implicit val addressWrites = (
     (__ \ "id").write(PkWriter)   and

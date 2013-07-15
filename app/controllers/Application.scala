@@ -61,7 +61,8 @@ object Application extends Controller {
                 case None => BadRequest("Internal server error")
               }
        }),
-      invalid = (e => {BadRequest("Detected error " + JsError.toFlatJson(e))})
+      invalid = (e => {      println(e)
+        BadRequest("Detected error " + JsError.toFlatJson(e))})
       )
 
 

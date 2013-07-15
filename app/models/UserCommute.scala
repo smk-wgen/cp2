@@ -21,11 +21,11 @@ object UserCommute{
 
   implicit val commuteReads = (
     (__ \ "id").read(PkReader) and
-      (__ \ "startTime").read[Int] and
-      (__ \ "endTime").read[Int] and
-      (__ \"startAddress").read[Long] and
-      (__  \ "endAddress").read[Long] and
-      (__ \ "user").read[Long]
+      (__ \ "startTime").read(UserAddress.StringToIntReader) and
+      (__ \ "endTime").read((UserAddress.StringToIntReader)) and
+      (__ \"startAddress").read(UserAddress.StringToLongReader) and
+      (__  \ "endAddress").read(UserAddress.StringToLongReader) and
+      (__ \ "user").read(UserAddress.StringToLongReader)
     )(UserCommute.apply _)
 
   implicit val commuteWrites = (
