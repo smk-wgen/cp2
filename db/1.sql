@@ -1,4 +1,5 @@
-#create database cp2;
+drop database cp2;
+create database cp2;
 use cp2;
 drop table if exists user_commute;
 drop table if exists user_address;
@@ -35,8 +36,8 @@ create table user_address (
 
 create table user_commute (
   id                        mediumint not null primary key auto_increment,
-  window_start                time not null,
-  window_end                time not null,
+  window_start              int not null,
+  window_end                int not null,
   from_address              mediumint not null,
   to_address                mediumint not null,
   user_id                   mediumint not null,

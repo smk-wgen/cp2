@@ -1,3 +1,4 @@
+import anorm.Id
 import anorm.{NotAssigned, Id}
 import models._
 import play.api.{Application, GlobalSettings}
@@ -40,7 +41,12 @@ object InitialData {
 
       ).foreach(UserAddress.create)
 
-
+      Seq(
+        UserCommute(Id(1),420,580,1,2,1),
+        UserCommute(Id(2),420,580,3,4,2),
+        UserCommute(Id(3),420,580,5,6,3),
+        UserCommute(Id(4),420,580,7,8,4)
+      ).foreach(UserCommute.create)
 
     }
 
