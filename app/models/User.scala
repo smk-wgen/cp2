@@ -107,5 +107,11 @@ object User{
     }
   }
 
+  def findAll:List[User] = {
+    DB.withConnection { implicit connection =>
+      SQL("select * from user").as(User.userDBRecordParser *)
+    }
+  }
+
 
 }

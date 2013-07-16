@@ -1,15 +1,27 @@
+@(user:User)
 <!DOCTYPE html>
 <html ng-app="profiler">
-<head>
-    <title>Dashboard</title>
-    @common.render()
-</head>
-<body>
-  <div ng-include="'/assets/angular/profile-form.html'"></div>
-  <br/>
-  <div ng-include="'/assets/angular/addresses.html'"></div>
-  <div class="clearfix"></div>
+    <head>
+        <title>Dashboard</title>
+        @common.render()
+            <script src="@routes.Assets.at("javascripts/appcontrollers/AddressController.js")"></script>
+            <script src="@routes.Assets.at("javascripts/appcontrollers/CommuteTimeController.js")"></script>
+    </head>
+    <body>
+        <div class="row">
+            <div class="span4">
+                @user.imageUrl
+            </div>
+            <div class="span8">
+                <p>@user.name</p>
+                <p>@user.employer</p>
+                <p>@user.city</p>
+                <p>@user.linkedInId</p>
+                <p>@user.gender</p>
+            </div>
+        </div>
+        <div ng-include="'/assets/angular/profile.html'"></div>
 
-  <div ng-include="'/assets/angular/commute-times.html'"></div>
-</body>
+
+    </body>
 </html>

@@ -13,8 +13,17 @@ object Application extends Controller {
     Ok(views.html.index("Your new application is ready."))
   }
 
-  def dashboard = Action{
-    Ok(views.html.dashboard())
+  def dashboard(id:Long) = Action{
+    val maybeUser  = User.findById(id)
+    maybeUser match {
+      case Some(user) => Ok(views.html.dashboard(user))
+      case None => BadRequest("Could not find User")
+    }
+
+  }
+
+  def getWizard = Action{
+    Ok(views.html.profile())
   }
 
   def javascriptRoutes = Action{
@@ -96,17 +105,11 @@ object Application extends Controller {
 
     }
 
-  def getProfile(id:Long) = Action {
 
-       val maybeUser = User.findById(id)
-       maybeUser match{
-         case Some(user) => {
-          val commutes = UserCommute.findCommuteByUserId(user.id.get)
-
-           Ok(views.html.profile(user))
-         }
-         case _ => BadRequest("Couldnt find user")
-        }
+  def getUserAddresses(id:Long) = Action {
+    val addressList:List[UserAddress] = UserAddress.findAddressesByUser(id)
+    Ok(Json.toJson(addressList))
   }
+
 
 }

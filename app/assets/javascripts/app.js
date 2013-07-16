@@ -9,6 +9,6 @@ angular.module('xmpl', [/*, 'xmpl.directive', 'xmpl.filter'*/])
         })
     })*/;
 
-angular.module('profiler',['profiler.controllers']);
+angular.module('profiler',['appServices']);
 // A Controller for your app
 

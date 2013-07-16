@@ -1,20 +1,13 @@
-<div id="profilePageContainder" ng-controller="ProfileController">
-    <div class="row">
-        <div class="span4">
-            {{Image place holder}}
+<div id="profilePageContainer">
+    <div ng-controller="AddressController">
+        <div ng-repeat="address in addresses">
+            {{address.label}}
         </div>
-         <div class="span8">
-             <p>{{userName}}</p>
-             <p>{{userEmployer}}</p>
-             <p>{{userCity}}</p>
-             <p>{{linkedInId}}</p>
-             <p>{{sex}}</p>
-         </div>
     </div>
-    <div ng-repeat="address in addresses">
-        {{address.label}}
+    <div ng-controller="CommuteTimeController">
+        <div ng-repeat="commute in commutes">
+            {{commute}}
+        </div>
     </div>
-    <div ng-repeat="commute in commutes">
-        {{commute}}
-    </div>
+
 </div>

@@ -22,6 +22,7 @@ create table user (
 
 create table user_address (
   id                        mediumint not null primary key auto_increment,
+  label                     varchar(100) not null,
   line1                     varchar(255) not null,
   line2                     varchar(255),
   city                      varchar(255) not null,

@@ -61,8 +61,9 @@ object UserAddress{
   def create(address:UserAddress):Option[UserAddress] = {
     DB.withConnection {
       implicit connection =>
-        val maybeId:Option[Long] = SQL("insert into user_address(line1, line2,city, state, zip,user_id) " +
-          "values ({line1}, {line2}, {city}, {state}, {zip}, {userId});").on(
+        val maybeId:Option[Long] = SQL("insert into user_address(label,line1, line2,city, state, zip,user_id) " +
+          "values ({label},{line1}, {line2}, {city}, {state}, {zip}, {userId});").on(
+          'label -> address.label,
           'line1 -> address.line1,
           'line2 -> address.line2,
           'city -> address.city,
