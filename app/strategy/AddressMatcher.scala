@@ -12,17 +12,23 @@ object AddressMatcher {
 
         val json1:JsValue = Json.parse(GMapHelper.getAddressJson(a))
         val json2:JsValue = Json.parse(GMapHelper.getAddressJson(b))
-
+        //println("Address response for a "+json1)
+        //println("Address response for b" + json2)
         val (lat1,lon1):(Double,Double) =  extractLatLong(json1)
+        println("Latitude " + lat1+" , Longitude" + lon1)
         val (lat2,lon2):(Double,Double) = extractLatLong(json2)
+        println("Latitude " + lat2+" , Longitude" + lon2)
         val distance:Double = Math.sqrt((lat2-lat1)*(lat2-lat1) + (lon2-lon1)*(lon2-lon1))
         return distance <= threshold
 
   }
 
   def extractLatLong(js:JsValue):(Double,Double) = {
-    val location1:JsValue  = js.\("results").\("geometry").\("location")
-    (location1.\("lat").as[Double], location1.\("lon").as[Double])
+    val resultsJson = js.\("results")
+    val firstAddress:JsValue = js.\("results")(0)
+    println("Formatted Address" + firstAddress.\("formatted_address"))
+    val location1:JsValue  = firstAddress.\("geometry").\("location")
+    (location1.\("lat").as[Double], location1.\("lng").as[Double])
   }
 
 }
