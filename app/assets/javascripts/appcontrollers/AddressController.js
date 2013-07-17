@@ -3,9 +3,6 @@
  */
 function AddressController($scope,$http,addressService,userService){
     'use strict';
-    $scope.$watch('addressService.myAddresses',function(newValue,oldValue){
-        console.log('Addresses changed');
-    });
     $scope.addresses = addressService.getUserAddresses(userService.currentUser);
     $scope.userId = userService.currentUser; //get this from a service
     $scope.line1 = "Street name";
@@ -14,6 +11,7 @@ function AddressController($scope,$http,addressService,userService){
     $scope.city = "Chewburg";
     $scope.state = "PA";
     $scope.zip = 10944;
+
     $scope.addAddress = function(){
         $http.post("/address", { id : '', label: $scope.label, line1: $scope.line1,
             line2: $scope.line2, city: $scope.city , zip : $scope.zip , state : $scope.state,
@@ -30,6 +28,16 @@ function AddressController($scope,$http,addressService,userService){
 
             });
     };
+
+    $scope.getAddresses = function(){
+         var addressListPromise = addressService.getUserAddresses(userService.currentUser);
+        addressListPromise.then(function(response){
+            console.log("Got the addresses");
+            $scope.addresses = response.data;
+        });
+    };
+
+    $scope.getAddresses();
 
 }
 AddressController.$inject = ['$scope','$http','addressService','userService'];

@@ -20,11 +20,14 @@ servicesModule.factory('userService',function($http){
 servicesModule.factory('addressService',function($http){
     var myAddresses = [];
     function getAddresses (id) {
-        $http.get('/addresses/'+id).success(function(data){
-            console.log(data);
-            myAddresses = data;
-        }).error(function(data){console.log(data);});
-        return myAddresses;
+        //return $http.(SapphireConfig.csUrlBuilder('/action/interact/enactedComponent/'+cardStack.key+'/markActive'),{})
+        return $http.get('/addresses/'+id);
+//        return $http.get('/addresses/'+id).success(function(data){
+//            console.log(data);
+//            myAddresses = data;
+//        }).error(function(data){console.log(data);});
+//        console.log("Returning myaddreses",myAddresses);
+//        return myAddresses;
     };
     function addAddress(address){
         myAddresses.push(address);
@@ -33,41 +36,10 @@ servicesModule.factory('addressService',function($http){
              getUserAddresses: getAddresses,
              addUserAddress : addAddress};
 });
-//angular.module('appServices', []).service('addressService', function () {
-//    var myAddresses = [];
-//    function getAddresses () {
-//        myAddresses = [
-//            {
-//                "label": "Home",
-//                "line1": "10871ststreetGuttenberg",
-//                "line2": "",
-//                "city": "Guttenberg",
-//                "state": "NJ",
-//                "zip": 19094
-//            },
-//            {
-//                "label": "Room2",
-//                "line1": "53HamiltonAve",
-//                "line2": "",
-//                "city": "StatenIsland",
-//                "state": "NY",
-//                "zip": 9394
-//            },
-//            {
-//                "label": "Work",
-//                "line1": "55WashStreet",
-//                "line2": "824",
-//                "city": "NY",
-//                "state": "NY",
-//                "zip": 1094
-//            }
-//        ];
-//        return myAddresses;
-//    };
-//    function addAddress(address){
-//        myAddresses.push(address);
-//    }
-//    return { myAddresses : getAddresses(),
-//             getUserAddresses: getAddresses,
-//             addUserAddress : addAddress};
-//});
+servicesModule.factory('commuteService',function($http){
+     return{
+         getUserCommutes : function(id){
+             return $http.get('/usercommutes/'+id);
+         }
+     };
+});

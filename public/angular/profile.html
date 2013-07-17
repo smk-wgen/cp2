@@ -1,10 +1,13 @@
 <div id="profilePageContainer">
     <div ng-controller="AddressController">
+         Your addresses
         <div ng-repeat="address in addresses">
             {{address.label}}
         </div>
     </div>
+    Your commutes
     <div ng-controller="CommuteTimeController">
+
         <div ng-repeat="commute in commutes">
             {{commute}}
         </div>

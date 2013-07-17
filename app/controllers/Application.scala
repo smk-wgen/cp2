@@ -5,6 +5,7 @@ import play.api.mvc._
 import models.{UserCommute, UserAddress, User}
 import play.api.libs.json._
 import services.MatchingService
+import mappers.CommuteMapper
 
 
 object Application extends Controller {
@@ -111,5 +112,20 @@ object Application extends Controller {
     Ok(Json.toJson(addressList))
   }
 
+  def getUserCommutes(id:Long) = Action{
+
+    val maybeUser:Option[User] = User.findById(id)
+    maybeUser match{
+      case Some(user) => {
+        val commuteList:List[UserCommute] = UserCommute.findCommuteByUserId(id)
+        val addressList:List[UserAddress] = UserAddress.findAddressesByUser(id)
+        Ok(Json.toJson(CommuteMapper.buildCommutes(user,addressList,commuteList)))
+      }
+      case None => {
+        BadRequest("Didnt find user in db")
+      }
+    }
+
+  }
 
 }

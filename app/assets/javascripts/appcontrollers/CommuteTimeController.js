@@ -1,17 +1,18 @@
 /**
  * Created by skunnumkal on 7/15/13.
  */
-function CommuteTimeController($scope,addressService,$http){
+function CommuteTimeController($scope,addressService,$http,userService,commuteService){
     'use strict';
     $scope.startTime = 420;
     $scope.endTime = 570;
-    $scope.userId = 1;
+
 
 
     $scope.ucas = addressService.myAddresses;
 
     $scope.startaddress = '';
     $scope.endaddress = '';
+    $scope.commutes = [];
 
     $scope.isNotSameAsStart = function(address){
         return $scope.startaddress.label !== address.label;
@@ -21,12 +22,21 @@ function CommuteTimeController($scope,addressService,$http){
         $scope.endTimeAsInt = $("#slider-range").slider("values", 1);
         console.log($scope.startTime,$scope.endTime,$scope.startaddress,$scope.startTimeAsInt,$scope.endTimeAsInt);
         $http.post("/usercommute", { id: '',startAddress: $scope.startaddress.id, endaddress: $scope.endaddress.id,
-            startTime: $scope.startTimeAsInt, endTime: $scope.endTimeAsInt , userId : $scope.userId })
+            startTime: $scope.startTimeAsInt, endTime: $scope.endTimeAsInt , userId : userService.currentUser })
             .success(function(data){
                 console.log(data);
                 //make rest of the page visible
 
             });
     };
+
+    $scope.getUserCommutes = function(){
+        var commuteListPromise = commuteService.getUserCommutes(userService.currentUser);
+        commuteListPromise.then(function(response){
+            console.log("Got the user's commutes");
+            $scope.commutes = response.data;
+        });
+    };
+    $scope.getUserCommutes();
 }
-CommuteTimeController.$inject = ['$scope','addressService','$http'];
+CommuteTimeController.$inject = ['$scope','addressService','$http','userService','commuteService'];

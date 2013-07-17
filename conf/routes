@@ -8,6 +8,7 @@ GET         /dashboard/:id                    controllers.Application.dashboard(
 GET         /user/:id                         controllers.Application.findUser(id:Long)
 GET         /wizard                           controllers.Application.getWizard
 GET         /addresses/:id                    controllers.Application.getUserAddresses(id:Long)
+GET         /usercommutes/:id                 controllers.Application.getUserCommutes(id:Long)
 
 POST        /user                             controllers.Application.postMessage
 POST        /address                          controllers.Application.postAddress
