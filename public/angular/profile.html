@@ -11,7 +11,7 @@
 
 
         <div ng-repeat="commute in commutes">
-            {{commute.startAddress}} {{commute.startTime}} {{commute.endAddress}} {{commute.endTime}} <input type="button" ng-click="findMatches(commute.commuteId)" value="View Matches" />
+            {{commute.startAddress}} {{commute.startTime}} {{commute.endAddress}} {{commute.endTime}} <a class="btn" href="/commutematches/{{commute.commuteId}}">View</a>
         </div>
     </div>
 

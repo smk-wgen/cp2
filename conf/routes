@@ -9,6 +9,8 @@ GET         /user/:id                         controllers.Application.findUser(i
 GET         /wizard                           controllers.Application.getWizard
 GET         /addresses/:id                    controllers.Application.getUserAddresses(id:Long)
 GET         /usercommutes/:id                 controllers.Application.getUserCommutes(id:Long)
+GET         /commutematches/:id               controllers.Application.getCommuteMatches(id:Long)
+
 
 POST        /user                             controllers.Application.postMessage
 POST        /address                          controllers.Application.postAddress

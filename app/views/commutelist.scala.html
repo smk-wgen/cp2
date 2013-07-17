@@ -1,0 +1,20 @@
+@(commutes:List[UserCommuteView])
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Matches </title>
+        @common.render()
+
+
+    </head>
+    <body>
+        Your matches
+
+            <ul>
+            @commutes.map { commute =>
+                <li>@commute.userName @commute.startAddress @commute.endAddress @commute.startTime @commute.endTime</li>
+            }
+            </ul>
+
+    </body>
+</html>

@@ -99,9 +99,10 @@ object Application extends Controller {
        case Some(dbCommute) => {
          val allCommutes:List[UserCommute] = UserCommute.findAllCommutes
          val matchingCommutes:List[UserCommute] = MatchingService.getMatches(dbCommute,allCommutes)
-         Ok(Json.toJson(matchingCommutes))
+          Ok(views.html.commutelist(CommuteMapper.buildCommutes(matchingCommutes)))
+         //Ok(Json.toJson(matchingCommutes))
        }
-       case _ => BadRequest("Didnt find the record")
+       case _ => BadRequest("Didnt find the commute record")
      }
 
     }
@@ -118,8 +119,7 @@ object Application extends Controller {
     maybeUser match{
       case Some(user) => {
         val commuteList:List[UserCommute] = UserCommute.findCommuteByUserId(id)
-        val addressList:List[UserAddress] = UserAddress.findAddressesByUser(id)
-        Ok(Json.toJson(CommuteMapper.buildCommutes(user,addressList,commuteList)))
+        Ok(Json.toJson(CommuteMapper.buildCommutes(commuteList)))
       }
       case None => {
         BadRequest("Didnt find user in db")

@@ -1,7 +1,7 @@
 /**
  * Created by skunnumkal on 7/15/13.
  */
-function CommuteTimeController($scope,addressService,$http,userService,commuteService){
+function CommuteTimeController($scope,addressService,$http,userService,commuteService,$location){
     'use strict';
     $scope.startTime = 420;
     $scope.endTime = 570;
@@ -37,20 +37,12 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
             $scope.commutes = response.data;
 
             console.log("Got the user's commutes");
-            $scope.gridOptions = {
-                data: 'commutes',
-                columnDefs: [{field:'startAddress', displayName:'Start Address'},{field:'endAddress',displayName:'End Address'},
-                    {field:'startTime', displayName:'Start Time'},{field:'endTime',displayName:'End Time'},
-                    {displayName: 'View Matches', cellTemplate: '<input type="button" name="view" ng-click="findMatches(row.entity.commuteId)" value="View">'}
-                ]
-            };
+
 
         });
     };
     $scope.getUserCommutes();
 
-    $scope.findMatches = function(id){
-      console.log("Need to find matches"+id);
-    };
+
 }
-CommuteTimeController.$inject = ['$scope','addressService','$http','userService','commuteService'];
+CommuteTimeController.$inject = ['$scope','addressService','$http','userService','commuteService','$location'];

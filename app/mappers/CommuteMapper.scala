@@ -1,20 +1,23 @@
 package mappers
 
-import views.UserCommuteView
 import models._
+import scala.Some
 
 /**
  * Created by skunnumkal on 7/17/13.
  */
 object CommuteMapper {
 
-  def buildCommutes(user:User,addresses:List[UserAddress],commutes:List[UserCommute]):List[UserCommuteView] = {
+  def buildCommutes(commutes:List[UserCommute]):List[UserCommuteView] = {
 
 
     val viewList:List[UserCommuteView] = for {
       commute <- commutes
-      startAddress = getAddress(addresses,commute.startAddress)
-      endAddress = getAddress(addresses,commute.endAddress)
+      commuteStartAddress = UserAddress.findById(commute.startAddress).get
+      commuteEndAddress = UserAddress.findById(commute.endAddress).get
+      startAddress = getAddress(commuteStartAddress)
+      endAddress = getAddress(commuteEndAddress)
+      user = User.findById(commute.user).get
       startTime = computeTime(commute.startTime)
       endTime = computeTime(commute.endTime)
     } yield UserCommuteView(startTime,endTime,user.id.get,user.name,startAddress,endAddress,commute.startAddress,commute.endAddress,commute.id.get)
@@ -23,12 +26,8 @@ object CommuteMapper {
   }
 
 
-  private def getAddress(list:List[UserAddress],addressId:Long):String = {
-    val maybeAddress:Option[UserAddress] = list.find(currAddress => currAddress.id.get.equals(addressId))
-    maybeAddress match {
-      case Some(address) => address.line1+", "+address.line2+ ", "+address.city+ ", "+address.state+ ", "+address.zip
-      case None => ""
-    }
+  private def getAddress(address:UserAddress):String = {
+    address.line1+", "+address.line2+ ", "+address.city+ ", "+address.state+ ", "+address.zip
   }
   private def computeTime(time:Int):String = {
     val hrs:Int =  time / 60;
