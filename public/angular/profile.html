@@ -8,8 +8,10 @@
     Your commutes
     <div ng-controller="CommuteTimeController">
 
+
+
         <div ng-repeat="commute in commutes">
-            {{commute}}
+            {{commute.startAddress}} {{commute.startTime}} {{commute.endAddress}} {{commute.endTime}} <input type="button" ng-click="findMatches(commute.commuteId)" value="View Matches" />
         </div>
     </div>
 

@@ -17,7 +17,7 @@ object CommuteMapper {
       endAddress = getAddress(addresses,commute.endAddress)
       startTime = computeTime(commute.startTime)
       endTime = computeTime(commute.endTime)
-    } yield UserCommuteView(startTime,endTime,user.id.get,user.name,startAddress,endAddress,commute.startAddress,commute.endAddress)
+    } yield UserCommuteView(startTime,endTime,user.id.get,user.name,startAddress,endAddress,commute.startAddress,commute.endAddress,commute.id.get)
 
     viewList
   }
@@ -31,13 +31,11 @@ object CommuteMapper {
     }
   }
   private def computeTime(time:Int):String = {
-    if(time>=720){   //PM
-      val hrs:Int = (time - 720)/60;
-      val mins:Int = (time - 720)%60;
-         hrs.toString+ " : "+ mins.toString+" PM"
-    }else{
-      (time/60).toString+ " : "+(time%60).toString+" AM"
-    }
+    val hrs:Int =  time / 60;
+    val mins:Int = time % 60;
+    val hrsAsString:String = if(hrs==0){"00"} else {hrs.toString}
+    val minsAsString:String = if(mins==0){"00"} else {mins.toString}
+    hrsAsString + " : " + minsAsString
   }
 
 }

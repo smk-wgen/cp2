@@ -6,7 +6,7 @@ import play.api.libs.json._
  * Created by skunnumkal on 7/17/13.
  */
 case class UserCommuteView(val startTime:String, val endTime:String,val userId:Long,val userName:String,val startAddress:String,
-                           val endAddress:String,val startAddressId:Long,val endAddressId:Long)
+                           val endAddress:String,val startAddressId:Long,val endAddressId:Long,val commuteId:Long)
 
 object UserCommuteView{
   implicit val writesUserCommuteView: Writes[UserCommuteView] = new Writes[UserCommuteView] {
@@ -17,7 +17,8 @@ object UserCommuteView{
            "userId" -> commuteView.userId,
            "userName" -> commuteView.userName,
            "startAddress" -> commuteView.startAddress,
-           "endAddress" -> commuteView.endAddress
+           "endAddress" -> commuteView.endAddress,
+           "commuteId" ->commuteView.commuteId
         )
       json
     }
