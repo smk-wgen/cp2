@@ -1,17 +1,20 @@
-@(title: String)(content: Html)
-
+@(title: String)
 <!DOCTYPE html>
 
-<html ng-app="xmpl">
+<html ng-app="profiler">
     <head>
         <title>@title</title>
 
       @common.apply()
-
+        <script src="@routes.Assets.at("javascripts/ng-grid.min.js")" type="text/javascript"></script>
+        <script src="@routes.Assets.at("javascripts/appcontrollers/AddressController.js")"></script>
+        <script src="@routes.Assets.at("javascripts/appcontrollers/CommuteTimeController.js")"></script>
+        <script src="@routes.Assets.at("javascripts/appcontrollers/LinkedInController.js")"></script>
+        <script src="@routes.Assets.at("javascripts/appcontrollers/ProfileController.js")"></script>
 
     </head>
     <body>
-        @content
+
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">
             api_key: 91zpl9j92hr9
             onLoad: onLinkedInLoad
@@ -28,19 +31,36 @@
             function onLinkedInAuth(){
                 console.log("User has been authenticated");
                 IN.API.Profile("me").result(function(data){
-                  console.log(window);
-                   window.injectIntoAngularWorld({
-                                    name : data.values[0].firstName+' '+data.values[0].lastName,
-                                    title : data.values[0].headline,
-                                    imageUrl : data.values[0].pictureUrl,
-                                    linkedInMemberId : data.values[0].id
-                                    });
-
+                angular.element($("#theDiv")).scope().setAuthenticatedUser(
+            {
+                                                name : data.values[0].firstName+' '+data.values[0].lastName,
+                                                title : data.values[0].headline,
+                                                imageUrl : data.values[0].pictureUrl,
+                                                linkedInMemberId : data.values[0].id
+                                                }
+            );
               }).error(function(data){
                 alert("Couldnt authenticated with linkedIn");
             });
             }
 
         </script>
+
+        <div id="theDiv" ng-controller="LinkedInController">
+
+                <div id="wizardDiv" ng-show="authenticated && isNew">
+
+                        <div ng-include="'/assets/angular/profile-form.html'"></div>
+                        <div ng-include="'/assets/angular/addresses.html'"></div>
+                        <div ng-include="'/assets/angular/commute-times.html'"></div>
+                </div>
+                <div id="dashboardDiv"  ng-show="authenticated && !isNew">
+
+                        <div ng-include="'/assets/angular/profile.html'">
+                            Hello , Someone
+                        </div>
+                </div>
+        </div>
+
     </body>
 </html>
