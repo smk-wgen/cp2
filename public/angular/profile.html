@@ -1,4 +1,19 @@
 <div id="profilePageContainer">
+    <div ng-controller="ProfileController">
+        Your profile
+        <div class="row">
+            <div class="span4">
+                <img ng-src="{{imageUrl}}" />
+            </div>
+            <div class="span8">
+                <p>{{userName}}</p>
+                <p>{{userEmployer}}</p>
+                <p>New York City</p>
+
+                <p>{{sex}}</p>
+            </div>
+        </div>
+    </div>
     <div ng-controller="AddressController">
          Your addresses
         <div ng-repeat="address in addresses">

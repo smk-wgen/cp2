@@ -2,13 +2,21 @@
  * Created by skunnumkal on 7/18/13.
  */
 function LinkedInController($scope,userService){
+    $scope.authenticated = false;
+    $scope.isNew = true;
 
-    userService.register($scope);
-    console.log("User Is",userService.currentUser);
-    $scope.$watch('userService.currentUser != null',function(){
-         console.log("Value changed");
-         console.log(userService.currentUser);
-    });
+    $scope.setAuthenticatedUser = function(liUser){
+        $scope.authenticated = true;
+
+        userService.currentUser = liUser;
+        var someResultPromise = userService.isRegistered(liUser.linkedInMemberId);
+           someResultPromise.then(function(result){
+               console.log("Result of 2nd promise",result);
+               $scope.isNew = false;
+           });
+
+
+    }
 
 
 }

@@ -3,11 +3,8 @@
  */
 'use strict';
 var servicesModule = angular.module('appServices', ['xmpl']);
-servicesModule.factory('userService',function($http,fromoutside){
-    var authenticatedUser;
-    fromoutside.then(function(obj) {
-        authenticatedUser = obj;
-    });
+servicesModule.factory('userService',function($http){
+    var authenticatedUser = null;
       return {
          currentUser : authenticatedUser,
          getUser : function(id){
@@ -19,26 +16,28 @@ servicesModule.factory('userService',function($http,fromoutside){
          getUserAddresses : function(id){
              console.log("Get user addresses");
          },
-         authenticate : function(id){
+         isRegistered  : function(id){
              var userPromise = $http.get('/checkExists/'+id);
-             userPromise.then(function(response){
-                 console.log(response.data);
+             var result = null;
+             var anotherPromise = userPromise.then(function(response){
                  var responseData = response.data;
-                 if(responseData.isNew=='false'){
-                     authenticatedUser.id = responseData.user.id;
-
+                 if(responseData.isNew === false){
+                     authenticatedUser = responseData.user;
                      console.log("User exists in our db..Now forward to dashboard");
-                     $window.location.href='/dashboard/'+responseData.user.id;
+                     result = true;
                  }
                  else{
                      console.log("New User..");
-                     $window.location.href ='/wizard';
+                     result = false;
                  }
 
-
+                 return result;
 
 
              });
+
+             return anotherPromise;
+
          }
       };
 });

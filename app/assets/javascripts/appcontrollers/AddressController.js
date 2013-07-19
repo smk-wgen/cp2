@@ -3,8 +3,7 @@
  */
 function AddressController($scope,$http,addressService,userService){
     'use strict';
-    $scope.addresses = addressService.getUserAddresses(userService.currentUser.id);
-    $scope.userId = userService.currentUser.id; //get this from a service
+    $scope.addresses = []; //addressService.getUserAddresses(userService.currentUser.id);
     $scope.line1 = "Street name";
     $scope.label = "Label of Address";
     $scope.line2 = '';
@@ -15,14 +14,14 @@ function AddressController($scope,$http,addressService,userService){
     $scope.addAddress = function(){
         $http.post("/address", { id : '', label: $scope.label, line1: $scope.line1,
             line2: $scope.line2, city: $scope.city , zip : $scope.zip , state : $scope.state,
-            userId : $scope.userId})
+            userId : userService.currentUser.id})
             .success(function(data){
                 console.log(data);
                 //$scope.addresses.push({name:$scope.label});
                 addressService.addAddress({
                     label : $scope.label, line1: $scope.line1,
                     line2: $scope.line2, city: $scope.city , zip : $scope.zip , state : $scope.state,
-                    userId : $scope.userId
+                    userId : userService.currentUser.id
                 });
                 //make rest of the page visible
 
@@ -37,7 +36,7 @@ function AddressController($scope,$http,addressService,userService){
         });
     };
 
-    $scope.getAddresses();
+    //$scope.getAddresses();
 
 }
 AddressController.$inject = ['$scope','$http','addressService','userService'];

@@ -47,7 +47,7 @@
         </script>
 
         <div id="theDiv" ng-controller="LinkedInController">
-
+                      {{authenticated}},{{isNew}}
                 <div id="wizardDiv" ng-show="authenticated && isNew">
 
                         <div ng-include="'/assets/angular/profile-form.html'"></div>

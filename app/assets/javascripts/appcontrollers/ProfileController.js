@@ -1,18 +1,31 @@
 /**
  * Created by skunnumkal on 7/15/13.
  */
-function ProfileController($scope,$routeParams,userService,$http){
+function ProfileController($scope,userService,$http){
   'use strict';
-    userService.register($scope);
-    $scope.userName = userService.authenticatedUser.name;
-    $scope.userEmployer = userService.authenticatedUser.title;
+
+
     $scope.userCity = "New York";
-    $scope.imageUrl = userService.authenticatedUser.imageUrl;
-    $scope.linkedInId = userService.authenticatedUser.linkedInMemberId;
+
     $scope.email = "abc@example.com";
     $scope.sex = "male";
     $scope.mobile = "000-000-0000";
+    $scope.userService = userService;
 
+    $scope.$watch('userService.currentUser != null',function(newValue, oldValue){
+       console.log("UserService CurrentUser Old",oldValue,"New",newValue);
+
+       if(newValue){
+           $scope.fillUserForm();
+       }
+
+    });
+    $scope.fillUserForm = function(){
+        $scope.imageUrl = userService.currentUser.imageUrl;
+        $scope.linkedInId = userService.currentUser.linkedInMemberId;
+        $scope.userName = userService.currentUser.name;
+        $scope.userEmployer = userService.currentUser.title;
+    };
     $scope.submitProfile = function(){
 
 
@@ -21,8 +34,8 @@ function ProfileController($scope,$routeParams,userService,$http){
             city: $scope.userCity, gender: $scope.sex , email : $scope.email , cell : $scope.mobile,
             imageUrl : $scope.imageUrl, linkedInId : $scope.linkedInId})
             .success(function(data){
-                console.log(data);
-                //make rest of the page visible
+                alert("Created user.Next fill address");
+
 
             });
 
@@ -31,5 +44,5 @@ function ProfileController($scope,$routeParams,userService,$http){
     };
 }
 
-ProfileController.$inject = ['$scope','$routeParams', 'userService', '$http'];
+ProfileController.$inject = ['$scope','userService', '$http'];
 

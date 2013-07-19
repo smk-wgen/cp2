@@ -7,8 +7,9 @@
               Name : <p>{{userName}}</p>
               Employer: <p>{{userEmployer}}</p>
               City: <p> {{userCity}}</p>
-              Image <p> {{imageUrl}}</p>
-              LinkedinURL <p>{{linkedInId}}</p>
+              <img ng-src="{{imageUrl}}" />
+
+
               Gender?
             <input type="radio" ng-model="user.sex" value="male">Male
             <input type="radio" ng-model="sex" value="female" class="clearfix">Female

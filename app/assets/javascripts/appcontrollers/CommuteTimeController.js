@@ -41,7 +41,7 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
 
         });
     };
-    $scope.getUserCommutes();
+    //$scope.getUserCommutes();
 
 
 }
