@@ -3,11 +3,12 @@
  */
 function ProfileController($scope,$routeParams,userService,$http){
   'use strict';
-    $scope.userName = "Name From Linkedin";
-    $scope.userEmployer = "Employer (from LinkedIn)";
-    $scope.userCity = "City (from LinkedIn)";
-    $scope.imageUrl = "imgsrc";
-    $scope.linkedInId = "www.linkedin.com";
+    userService.register($scope);
+    $scope.userName = userService.authenticatedUser.name;
+    $scope.userEmployer = userService.authenticatedUser.title;
+    $scope.userCity = "New York";
+    $scope.imageUrl = userService.authenticatedUser.imageUrl;
+    $scope.linkedInId = userService.authenticatedUser.linkedInMemberId;
     $scope.email = "abc@example.com";
     $scope.sex = "male";
     $scope.mobile = "000-000-0000";

@@ -6,6 +6,7 @@ import models.{UserCommute, UserAddress, User}
 import play.api.libs.json._
 import services.MatchingService
 import mappers.CommuteMapper
+import anorm._
 
 
 object Application extends Controller {
@@ -58,6 +59,27 @@ object Application extends Controller {
       case Some(user) => Ok(Json.toJson(user))
       case None => BadRequest("Domain Record Not Found")
     }
+  }
+
+  def findUserByLinkedInId(linkedInId:String) = Action {
+
+
+      val maybeExistingUser:Option[User] = User.findByLinkedInId(linkedInId)
+
+      maybeExistingUser match {
+          case Some(existingUser) => {
+            val jsRespBody = Json.obj("isNew" -> false,"user" -> existingUser)
+            Ok(Json.toJson(jsRespBody))
+          }
+          case None => {
+            val jsRespBody = Json.obj("isNew" -> true)
+            Ok(Json.toJson(jsRespBody))
+          }
+
+        }
+
+
+
   }
 
     def postAddress = Action(parse.json) {req =>

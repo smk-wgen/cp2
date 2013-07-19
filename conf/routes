@@ -10,11 +10,13 @@ GET         /wizard                           controllers.Application.getWizard
 GET         /addresses/:id                    controllers.Application.getUserAddresses(id:Long)
 GET         /usercommutes/:id                 controllers.Application.getUserCommutes(id:Long)
 GET         /commutematches/:id               controllers.Application.getCommuteMatches(id:Long)
+GET         /checkExists/:linkedInId          controllers.Application.findUserByLinkedInId(linkedInId:String)
 
 
 POST        /user                             controllers.Application.postMessage
 POST        /address                          controllers.Application.postAddress
 POST        /usercommute                      controllers.Application.postCommute
+
 
 # Javascript routing
 GET         /assets/javascripts/routes        controllers.Application.javascriptRoutes

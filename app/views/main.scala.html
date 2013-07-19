@@ -24,9 +24,21 @@
                    console.log("LinkedIn script has loaded");
                    IN.Event.on(IN, "auth", onLinkedInAuth);
             }
+
             function onLinkedInAuth(){
                 console.log("User has been authenticated");
-                IN.API.Profile("me").result(displayProfiles);
+                IN.API.Profile("me").result(function(data){
+                  console.log(window);
+                   window.injectIntoAngularWorld({
+                                    name : data.values[0].firstName+' '+data.values[0].lastName,
+                                    title : data.values[0].headline,
+                                    imageUrl : data.values[0].pictureUrl,
+                                    linkedInMemberId : data.values[0].id
+                                    });
+
+              }).error(function(data){
+                alert("Couldnt authenticated with linkedIn");
+            });
             }
 
         </script>

@@ -22,7 +22,7 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
         $scope.endTimeAsInt = $("#slider-range").slider("values", 1);
         console.log($scope.startTime,$scope.endTime,$scope.startaddress,$scope.startTimeAsInt,$scope.endTimeAsInt);
         $http.post("/usercommute", { id: '',startAddress: $scope.startaddress.id, endaddress: $scope.endaddress.id,
-            startTime: $scope.startTimeAsInt, endTime: $scope.endTimeAsInt , userId : userService.currentUser })
+            startTime: $scope.startTimeAsInt, endTime: $scope.endTimeAsInt , userId : userService.currentUser.id })
             .success(function(data){
                 console.log(data);
                 //make rest of the page visible
@@ -31,7 +31,7 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
     };
 
     $scope.getUserCommutes = function(){
-        var commuteListPromise = commuteService.getUserCommutes(userService.currentUser);
+        var commuteListPromise = commuteService.getUserCommutes(userService.currentUser.id);
         commuteListPromise.then(function(response){
 
             $scope.commutes = response.data;

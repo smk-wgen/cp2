@@ -3,8 +3,8 @@
  */
 function AddressController($scope,$http,addressService,userService){
     'use strict';
-    $scope.addresses = addressService.getUserAddresses(userService.currentUser);
-    $scope.userId = userService.currentUser; //get this from a service
+    $scope.addresses = addressService.getUserAddresses(userService.currentUser.id);
+    $scope.userId = userService.currentUser.id; //get this from a service
     $scope.line1 = "Street name";
     $scope.label = "Label of Address";
     $scope.line2 = '';
@@ -30,7 +30,7 @@ function AddressController($scope,$http,addressService,userService){
     };
 
     $scope.getAddresses = function(){
-         var addressListPromise = addressService.getUserAddresses(userService.currentUser);
+         var addressListPromise = addressService.getUserAddresses(userService.currentUser.id);
         addressListPromise.then(function(response){
             console.log("Got the addresses");
             $scope.addresses = response.data;

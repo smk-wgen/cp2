@@ -107,6 +107,14 @@ object User{
     }
   }
 
+  def findByLinkedInId(linkedInId:String):Option[User] = {
+    DB.withConnection { implicit connection =>
+      SQL("select * from user where linkedInId = {linkedInId}").on(
+        'linkedInId -> linkedInId
+      ).as(User.userDBRecordParser.singleOpt)
+    }
+  }
+
   def findAll:List[User] = {
     DB.withConnection { implicit connection =>
       SQL("select * from user").as(User.userDBRecordParser *)
