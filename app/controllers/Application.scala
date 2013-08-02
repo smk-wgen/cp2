@@ -35,8 +35,8 @@ object Application extends Controller {
       ).as("text/javascript")
   }
 
-  /** Controller action for POSTing chat messages */
-    def postMessage = Action(parse.json) {
+
+    def createUser = Action(parse.json) {
     request =>
     val json = request.body
     System.out.println(json)

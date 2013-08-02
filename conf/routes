@@ -13,7 +13,7 @@ GET         /commutematches/:id               controllers.Application.getCommute
 GET         /checkExists/:linkedInId          controllers.Application.findUserByLinkedInId(linkedInId:String)
 
 
-POST        /user                             controllers.Application.postMessage
+POST        /user                             controllers.Application.createUser
 POST        /address                          controllers.Application.postAddress
 POST        /usercommute                      controllers.Application.postCommute
 
