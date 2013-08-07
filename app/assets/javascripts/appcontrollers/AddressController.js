@@ -10,6 +10,7 @@ function AddressController($scope,$http,addressService,userService){
     $scope.city = "Chewburg";
     $scope.state = "PA";
     $scope.zip = 10944;
+    $scope.isAddressModalOpen = false;
 
     $scope.addAddress = function(){
         $http.post("/address", { id : '', label: $scope.label, line1: $scope.line1,
@@ -34,6 +35,18 @@ function AddressController($scope,$http,addressService,userService){
             console.log("Got the addresses");
             $scope.addresses = response.data;
         });
+    };
+
+    $scope.openAddressModal = function(){
+        $scope.isAddressModalOpen = true;
+    };
+
+    $scope.closeAddressModal = function(){
+       $scope.isAddressModalOpen = false;
+    };
+    $scope.opts = {
+        backdropFade: true,
+        dialogFade:true
     };
 
     //$scope.getAddresses();

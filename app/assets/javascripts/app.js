@@ -4,6 +4,6 @@
 angular.module('xmpl', ['appServices']);
 
 
-angular.module('profiler',['appServices']);
+angular.module('profiler',['appServices','ui.bootstrap']);
 // A Controller for your app
 

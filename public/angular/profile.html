@@ -14,12 +14,14 @@
             </div>
         </div>
     </div>
-    <div ng-controller="AddressController">
-         Your addresses
-        <div ng-repeat="address in addresses">
-            {{address.label}}
-        </div>
-    </div>
+    <div ng-include="'/assets/angular/addresses.html'"></div>
+    <!--<div ng-controller="AddressController">-->
+
+         <!--Your addresses-->
+        <!--<div ng-repeat="address in addresses">-->
+            <!--{{address.label}}-->
+        <!--</div>-->
+    <!--</div>-->
     Your commutes
     <div ng-controller="CommuteTimeController">
 
