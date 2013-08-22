@@ -1,27 +1,29 @@
 <div ng-controller="CommuteTimeController">
+    <button class="btn clearfix" ng-click="openCommuteModal()">Add a Commute</button>
+    <div modal="isCommuteModalOpen" close="closeCommuteModal()" options="opts">
+        Select a commute time
+        <p id="time"></p>
+
+        <div id="slider-range"></div>
+        <form>
 
 
-    Select a commute time
-    <p id="time"></p>
-
-    <div id="slider-range"></div>
-    <form>
+            Select start address
 
 
-                Select start address
+            <select ng-model="startaddress" ng-options="c.label for c in ucas"></select><br>
+            Select end address
+            <select ng-model="endaddress" ng-options="c.label for c in ucas | filter:isNotSameAsStart"></select><br>
+            <!--<label>Select end address</label>-->
+            <!--<select id = "endAddressId" ng-model="endAddress" ng-options="uca as uca.label for uca in ucas">-->
+
+            <button class="btn btn-primary" ng-click="submitCommute()">Save</button>
+            <button class="btn btn-secondary" ng-click="closeCommuteModal()">Cancel</button>
 
 
-                    <select ng-model="startaddress" ng-options="c.label for c in ucas"></select><br>
-        Select end address
-                    <select ng-model="endaddress" ng-options="c.label for c in ucas | filter:isNotSameAsStart"></select><br>
-                <!--<label>Select end address</label>-->
-                <!--<select id = "endAddressId" ng-model="endAddress" ng-options="uca as uca.label for uca in ucas">-->
+        </form>
+    </div>
 
-        <button ng-click="submitCommute()">Save</button>
-
-
-
-    </form>
 
 </div>
 

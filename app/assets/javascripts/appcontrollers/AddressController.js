@@ -1,7 +1,7 @@
 /**
  * Created by skunnumkal on 7/15/13.
  */
-function AddressController($scope,$http,addressService,userService){
+function AddressController($scope,addressService,userService){
     'use strict';
     $scope.addresses = []; //addressService.getUserAddresses(userService.currentUser.id);
     $scope.line1 = "Street name";
@@ -11,22 +11,39 @@ function AddressController($scope,$http,addressService,userService){
     $scope.state = "PA";
     $scope.zip = 10944;
     $scope.isAddressModalOpen = false;
+    $scope.userService = userService;
+    $scope.currentUser = {};
+
+    console.log("in AddressController..Current User = " + userService.currentUser);
+    $scope.$watch('userService.currentUser',function(newValue, oldValue){
+           if(newValue !== undefined || newValue != null){
+                 console.log("Value of currentUser just changed");
+                 console.log("New Value ",newValue);
+                 $scope.currentUser = newValue;
+           }
+    });
 
     $scope.addAddress = function(){
-        $http.post("/address", { id : '', label: $scope.label, line1: $scope.line1,
-            line2: $scope.line2, city: $scope.city , zip : $scope.zip , state : $scope.state,
-            userId : userService.currentUser.id})
-            .success(function(data){
-                console.log(data);
-                //$scope.addresses.push({name:$scope.label});
-                addressService.addAddress({
-                    label : $scope.label, line1: $scope.line1,
-                    line2: $scope.line2, city: $scope.city , zip : $scope.zip , state : $scope.state,
-                    userId : userService.currentUser.id
-                });
-                //make rest of the page visible
+        console.log("Adding an address for user",$scope.currentUser.id);
+        var addressPostJson = {
+          id : '',
+          label : $scope.label,
+          line1 : $scope.line1,
+          line2 : $scope.line2,
+          city : $scope.city,
+          zip : $scope.zip,
+          state : $scope.state,
+          userId : $scope.currentUser.id
+        };
+        var promise = addressService.addUserAddress(addressPostJson);
+        promise.then(function(response){
+             $scope.isAddressModalOpen = false;
+             $scope.addresses.push(response.data);
+        },function(errResponse){
+            alert("Something went wrong");
+            console.error(errResponse.data);
+        });
 
-            });
     };
 
     $scope.getAddresses = function(){
@@ -52,4 +69,4 @@ function AddressController($scope,$http,addressService,userService){
     //$scope.getAddresses();
 
 }
-AddressController.$inject = ['$scope','$http','addressService','userService'];
+AddressController.$inject = ['$scope','addressService','userService'];

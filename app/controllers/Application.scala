@@ -90,7 +90,7 @@ object Application extends Controller {
               val dbAddress = UserAddress.create(address)
               dbAddress match {
                 case Some(storedAddress) => Ok(Json.toJson(storedAddress))
-                case None => BadRequest("Internal server error")
+                case None => ServiceUnavailable("Internal server error")
               }
        }),
       invalid = (e => {      println(e)

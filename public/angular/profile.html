@@ -1,6 +1,6 @@
 <div id="profilePageContainer">
     <div ng-controller="ProfileController">
-        Your profile
+        <b>Your profile</b>
         <div class="row">
             <div class="span4">
                 <img ng-src="{{imageUrl}}" />
@@ -15,13 +15,7 @@
         </div>
     </div>
     <div ng-include="'/assets/angular/addresses.html'"></div>
-    <!--<div ng-controller="AddressController">-->
 
-         <!--Your addresses-->
-        <!--<div ng-repeat="address in addresses">-->
-            <!--{{address.label}}-->
-        <!--</div>-->
-    <!--</div>-->
     Your commutes
     <div ng-controller="CommuteTimeController">
 

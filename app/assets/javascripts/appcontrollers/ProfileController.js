@@ -9,11 +9,12 @@ function ProfileController($scope,userService,$http){
 
     $scope.email = "abc@example.com";
     $scope.sex = "male";
+    $scope.userEmployer = "Acme Inc";
     $scope.mobile = "000-000-0000";
     $scope.userService = userService;
 
-    $scope.$watch('userService.currentUser != null',function(newValue, oldValue){
-       console.log("UserService CurrentUser Old",oldValue,"New",newValue);
+    $scope.$watch('userService.currentUser',function(newValue, oldValue){
+
 
        if(newValue){
            $scope.fillUserForm();
@@ -24,7 +25,7 @@ function ProfileController($scope,userService,$http){
         $scope.imageUrl = userService.currentUser.imageUrl;
         $scope.linkedInId = userService.currentUser.linkedInMemberId;
         $scope.userName = userService.currentUser.name;
-        $scope.userEmployer = userService.currentUser.title;
+        $scope.userEmployer = userService.currentUser.title || userService.currentUser.employer;
     };
     $scope.submitProfile = function(){
 

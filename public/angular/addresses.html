@@ -6,7 +6,7 @@
             [{{$index + 1}}] {{address.label}}
         </li>
     </ul>
-    {{isAddressModalOpen}}    {{opts}}
+
     <div modal="isAddressModalOpen" close="closeAddressModal()" options="opts">
         <div class="modal-header">
             <label>Address:</label>
@@ -40,7 +40,7 @@
 
 
             <button class="btn btn-primary" ng-click="addAddress()">Add</button>
-            <button ng-click="closeAddressModal()" class="btn btn-primary" >Cancel</button>
+            <button ng-click="closeAddressModal()" class="btn btn-secondary" >Cancel</button>
         </div>
 
     </div>

@@ -5,7 +5,7 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
     'use strict';
     $scope.startTime = 420;
     $scope.endTime = 570;
-
+    $scope.isCommuteModalOpen = false;
 
 
     $scope.ucas = addressService.myAddresses;
@@ -42,6 +42,19 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
         });
     };
     //$scope.getUserCommutes();
+
+    $scope.openCommuteModal = function(){
+       $scope.isCommuteModalOpen = true;
+    };
+
+    $scope.closeCommuteModal = function(){
+       $scope.isCommuteModalOpen = false;
+    };
+
+    $scope.opts = {
+        backdropFade: true,
+        dialogFade:true
+    };
 
 
 }

@@ -2,11 +2,11 @@
  * Created by skunnumkal on 6/30/13.
  */
 'use strict';
-var servicesModule = angular.module('appServices', ['xmpl']);
+var servicesModule = angular.module('appServices', []);
 servicesModule.factory('userService',function($http){
-    var authenticatedUser = null;
-      return {
-         currentUser : authenticatedUser,
+
+      var aUserService = {
+         currentUser : '',
          getUser : function(id){
              console.log("Call the backend for the user");
          },
@@ -21,8 +21,10 @@ servicesModule.factory('userService',function($http){
              var result = null;
              var anotherPromise = userPromise.then(function(response){
                  var responseData = response.data;
+                 console.log("Response from backEnd for user",responseData);
                  if(responseData.isNew === false){
-                     authenticatedUser = responseData.user;
+                     aUserService.currentUser = responseData.user;
+                     console.log("Setting authenticated (currentUser) as",aUserService.currentUser);
                      console.log("User exists in our db..Now forward to dashboard");
                      result = true;
                  }
@@ -40,19 +42,19 @@ servicesModule.factory('userService',function($http){
 
          }
       };
+    return aUserService;
 });
 servicesModule.factory('addressService',function($http){
-    var myAddresses = [];
-    function getAddresses (id) {
-        return $http.get('/addresses/'+id);
 
-    };
-    function addAddress(address){
-        myAddresses.push(address);
-    }
     return {
-             getUserAddresses: getAddresses,
-             addUserAddress : addAddress};
+             getUserAddresses: function(id){
+                 return $http.get('/addresses/'+id);
+             },
+             addUserAddress : function(address){
+                 console.log("Create address payload",address);
+                 return $http.post("/address", address);
+             }
+    };
 });
 servicesModule.factory('commuteService',function($http){
      return{

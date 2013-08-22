@@ -11,7 +11,7 @@ function LinkedInController($scope,userService){
         userService.currentUser = liUser;
         var someResultPromise = userService.isRegistered(liUser.linkedInMemberId);
            someResultPromise.then(function(result){
-               console.log("Result of 2nd promise",result);
+               console.log("Result of 2nd promise",result," So user exists");
                $scope.isNew = false;
            });
 
