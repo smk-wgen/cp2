@@ -60,6 +60,9 @@ servicesModule.factory('commuteService',function($http){
      return{
          getUserCommutes : function(id){
              return $http.get('/usercommutes/'+id);
+         } ,
+         addUserCommute : function(commute){
+             return $http.post("/usercommute", commute);
          }
      };
 });

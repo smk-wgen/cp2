@@ -16,7 +16,11 @@ function LinkedInController($scope,userService){
            });
 
 
-    }
+    };
+    //Temporary hack to prevent keep calling linkedInd
+    $scope.setAuthenticatedUser({
+        'linkedInMemberId' : 'gu09aWAXSz'
+    });
 
 
 }

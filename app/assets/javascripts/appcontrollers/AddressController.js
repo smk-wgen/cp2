@@ -12,14 +12,31 @@ function AddressController($scope,addressService,userService){
     $scope.zip = 10944;
     $scope.isAddressModalOpen = false;
     $scope.userService = userService;
-    $scope.currentUser = {};
+    $scope.currentUser = undefined;
 
-    console.log("in AddressController..Current User = " + userService.currentUser);
+    var getAddresses = function(){
+
+        var addressListPromise = addressService.getUserAddresses($scope.currentUser.id);
+        addressListPromise.then(function(response){
+
+            $scope.addresses = response.data;
+            angular.forEach($scope.addresses,function(address){
+                console.log("Label of Address",address.label);
+            });
+        });
+    };
+
     $scope.$watch('userService.currentUser',function(newValue, oldValue){
            if(newValue !== undefined || newValue != null){
                  console.log("Value of currentUser just changed");
                  console.log("New Value ",newValue);
                  $scope.currentUser = newValue;
+                 if($scope.currentUser.id !== undefined){
+                     //$scope.addresses = addressService.getUserAddresses($scope.currentUser.id);
+                     getAddresses();
+
+                 }
+
            }
     });
 
@@ -46,13 +63,7 @@ function AddressController($scope,addressService,userService){
 
     };
 
-    $scope.getAddresses = function(){
-         var addressListPromise = addressService.getUserAddresses(userService.currentUser.id);
-        addressListPromise.then(function(response){
-            console.log("Got the addresses");
-            $scope.addresses = response.data;
-        });
-    };
+
 
     $scope.openAddressModal = function(){
         $scope.isAddressModalOpen = true;
