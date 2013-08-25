@@ -1,4 +1,12 @@
 <div ng-controller="CommuteTimeController">
+    Your commutes
+             {{commutes}}
+    <ul>
+        Label  View matches
+        <li ng-repeat="commute in commutes">
+            [{{$index + 1}}] {{commute.label}} <a class="btn clearfix" href="/commutematches/{{commute.id}}">View matches</a>
+        </li>
+    </ul>
     <button class="btn clearfix" ng-click="openCommuteModal()">Add a Commute</button>
     <div modal="isCommuteModalOpen" close="closeCommuteModal()" options="opts">
         <div class="modal-header">Select a commute time</div>
@@ -11,20 +19,24 @@
 
 
             <div class="row-fluid">
-                <div class="span4">
+                <div class="span3">
+                    Name your commute
+                </div>
+                <div class="span3">
                     Select start address
                 </div>
-                <div class="span4">
+                <div class="span3">
                     Select a start time
                 </div>
-                <div class="span4">
+                <div class="span3">
                     Select an end address
                 </div>
             </div>
             <div class="row-fluid">
-                <select class="span4" ng-model="startaddress" ng-options="c.label for c in ucas"></select>
-                <select class="span4" ng-model="timeInterval" ng-required="true" ng-options="interval.label for interval in commuteStartTimes"></select>
-                <select class="span4" ng-model="endaddress" ng-options="c.label for c in ucas | filter:isNotSameAsStart"></select>
+                <input class="span3" type="text" name="label" ng-model="label"/>
+                <select class="span3" ng-model="startaddress" ng-options="c.label for c in ucas"></select>
+                <select class="span3" ng-model="timeInterval" ng-required="true" ng-options="interval.label for interval in commuteStartTimes"></select>
+                <select class="span3" ng-model="endaddress" ng-options="c.label for c in ucas | filter:isNotSameAsStart"></select>
             </div>
 
 

@@ -3,7 +3,7 @@
  */
 function AddressController($scope,addressService,userService){
     'use strict';
-    $scope.addresses = []; //addressService.getUserAddresses(userService.currentUser.id);
+    $scope.addresses = [];
     $scope.line1 = "Street name";
     $scope.label = "Label of Address";
     $scope.line2 = '';
@@ -19,7 +19,7 @@ function AddressController($scope,addressService,userService){
         var addressListPromise = addressService.getUserAddresses($scope.currentUser.id);
         addressListPromise.then(function(response){
 
-            $scope.addresses = response.data;
+            $scope.addresses = response;
             angular.forEach($scope.addresses,function(address){
                 console.log("Label of Address",address.label);
             });
@@ -32,7 +32,6 @@ function AddressController($scope,addressService,userService){
                  console.log("New Value ",newValue);
                  $scope.currentUser = newValue;
                  if($scope.currentUser.id !== undefined){
-                     //$scope.addresses = addressService.getUserAddresses($scope.currentUser.id);
                      getAddresses();
 
                  }
@@ -55,7 +54,7 @@ function AddressController($scope,addressService,userService){
         var promise = addressService.addUserAddress(addressPostJson);
         promise.then(function(response){
              $scope.isAddressModalOpen = false;
-             $scope.addresses.push(response.data);
+             $scope.addresses.push(response);
         },function(errResponse){
             alert("Something went wrong");
             console.error(errResponse.data);

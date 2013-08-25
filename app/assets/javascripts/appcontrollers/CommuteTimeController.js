@@ -7,6 +7,7 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
     $scope.endTime = 570;
     $scope.isCommuteModalOpen = false;
     $scope.userService = userService;
+    $scope.addressService = addressService;
     $scope.commutes = [];
     $scope.currentUser = '';
     $scope.commuteStartTimes = [{'label' :'Before 6 am'},{'label':'6 am - 7 am'},{'label':'7 am - 8 am'},{'label':'8 am - 9 am'},
@@ -16,13 +17,20 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
            $scope.currentUser = newValue;
         if($scope.currentUser.id !== undefined){
             addressService.getUserAddresses($scope.currentUser.id).then(function(response){
-                $scope.ucas = response.data;
+                $scope.ucas = response;
                 console.log("Ucas",$scope.ucas);
                 getUserCommutes();
             });
 
 
         }
+    });
+
+    $scope.$watch('addressService.userAddresses.length',function(){
+        console.log("Watching ",$scope.addressService.userAddresses.length);
+        addressService.getUserAddresses($scope.currentUser.id).then(function(response){
+            $scope.ucas = response;
+        });
     });
 
 
@@ -34,7 +42,7 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
         var commuteListPromise = commuteService.getUserCommutes($scope.currentUser.id);
         commuteListPromise.then(function(response){
 
-            $scope.commutes = response.data;
+            $scope.commutes = response;
 
 
         });
@@ -70,6 +78,7 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
         console.log("Stats",$scope.startTime,$scope.endTime,$scope.startaddress,$scope.startTimeAsInt,$scope.endTimeAsInt);
         var commute = {
          id: '',
+         label : $scope.label,
          startAddress: $scope.startaddress.id,
          endAddress: $scope.endaddress.id,
          startTime: $scope.startTimeAsInt,
@@ -80,10 +89,10 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
         var promisedCommute = commuteService.addUserCommute(commute);
 
         promisedCommute.then(function(response){
-                console.log(response.data);
+                console.log(response);
                 //make rest of the page visible
                 $scope.isCommuteModalOpen = false;
-                $scope.commutes.push(response.data);
+                $scope.commutes.push(response);
             });
     };
 

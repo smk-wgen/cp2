@@ -37,6 +37,7 @@ create table user_address (
 create table user_commute (
   id                        mediumint not null primary key auto_increment,
   window_start              int not null,
+  label                     varchar(255) not null,
   window_end                int not null,
   from_address              mediumint not null,
   to_address                mediumint not null,

@@ -141,7 +141,8 @@ object Application extends Controller {
     maybeUser match{
       case Some(user) => {
         val commuteList:List[UserCommute] = UserCommute.findCommuteByUserId(id)
-        Ok(Json.toJson(CommuteMapper.buildCommutes(commuteList)))
+        //Ok(Json.toJson(CommuteMapper.buildCommutes(commuteList)))
+        Ok(Json.toJson(commuteList))
       }
       case None => {
         BadRequest("Didnt find user in db")
