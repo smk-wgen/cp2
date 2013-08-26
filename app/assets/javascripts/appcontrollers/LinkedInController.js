@@ -11,16 +11,16 @@ function LinkedInController($scope,userService){
         userService.currentUser = liUser;
         var someResultPromise = userService.isRegistered(liUser.linkedInMemberId);
            someResultPromise.then(function(result){
-               console.log("Result of 2nd promise",result," So user exists");
-               $scope.isNew = false;
+               console.log("Result of 2nd promise",result," So user exists =",result);
+               if(result){
+                   $scope.isNew = false;
+               }
+
            });
 
 
     };
-    //Temporary hack to prevent keep calling linkedInd
-    $scope.setAuthenticatedUser({
-        'linkedInMemberId' : 'gu09aWAXSz'
-    });
+
 
 
 }

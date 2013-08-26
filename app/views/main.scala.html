@@ -48,12 +48,11 @@
 
         <div id="theDiv" ng-controller="LinkedInController">
                      Authenticated: {{authenticated}}, New? : {{isNew}}
-                <div id="wizardDiv" ng-show="authenticated && isNew">
+
 
                         <div ng-include="'/assets/angular/profile-form.html'"></div>
-                        <div ng-include="'/assets/angular/addresses.html'"></div>
-                        <div ng-include="'/assets/angular/commute-times.html'"></div>
-                </div>
+
+
                 <div id="dashboardDiv"  ng-show="authenticated && !isNew">
 
                         <div ng-include="'/assets/angular/profile.html'">

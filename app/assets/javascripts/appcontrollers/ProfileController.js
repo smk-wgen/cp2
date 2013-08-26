@@ -6,7 +6,8 @@ function ProfileController($scope,userService,$http){
 
 
     $scope.userCity = "New York";
-
+    console.log("Profile Controller", $scope.authenticated,$scope.isNew);
+    $scope.isProfileModalOpen = $scope.authenticated && $scope.isNew;
     $scope.email = "abc@example.com";
     $scope.sex = "male";
     $scope.userEmployer = "Acme Inc";
@@ -21,27 +22,43 @@ function ProfileController($scope,userService,$http){
        }
 
     });
+    $scope.$watch('userService.currentUser.isNew',function(newValue,oldValue){
+       console.log("In watch",newValue,$scope.authenticated);
+       if(newValue !== undefined && newValue == true && $scope.authenticated){
+             $scope.isProfileModalOpen = true;
+       }
+    });
     $scope.fillUserForm = function(){
-        $scope.imageUrl = userService.currentUser.imageUrl;
+        $scope.imageUrl = userService.currentUser.imageUrl || '/assets/images/personal_user_128.png';
         $scope.linkedInId = userService.currentUser.linkedInMemberId;
         $scope.userName = userService.currentUser.name;
         $scope.userEmployer = userService.currentUser.title || userService.currentUser.employer;
     };
     $scope.submitProfile = function(){
-
-
-
-        $http.post("/user", { id: '',name: $scope.userName, employer: $scope.userEmployer,
+        if($scope.imageUrl === undefined){
+            $scope.imageUrl = '';
+        }
+        var userBody = { id: '',name: $scope.userName, employer: $scope.userEmployer,
             city: $scope.userCity, gender: $scope.sex , email : $scope.email , cell : $scope.mobile,
-            imageUrl : $scope.imageUrl, linkedInId : $scope.linkedInId})
-            .success(function(data){
-                alert("Created user.Next fill address");
+            imageUrl : $scope.imageUrl, linkedInId : $scope.linkedInId};
+        console.log("Post Payload User",userBody);
+        $http.post("/user",userBody )
+            .success(function(response){
+                console.log("Submmit user success",response.data);
+                userService.currentUser = response.data;
+                $scope.isProfileModalOpen = false;
 
 
-            });
+            }).error(function(errResponse){
+                    console.error(errResponse);
+                    alert("Sh1t blew up");
+                });
 
 
 
+    };
+    $scope.closeAddressModal = function(){
+        $scope.isProfileModalOpen = false;
     };
 }
 

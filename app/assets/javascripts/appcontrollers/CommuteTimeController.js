@@ -10,12 +10,13 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
     $scope.addressService = addressService;
     $scope.commutes = [];
     $scope.currentUser = '';
+    $scope.showCommuteAdd = false;
     $scope.commuteStartTimes = [{'label' :'Before 6 am'},{'label':'6 am - 7 am'},{'label':'7 am - 8 am'},{'label':'8 am - 9 am'},
         {'label':'After 9 am'}]; //];
     $scope.timeInterval = '';
     $scope.$watch('userService.currentUser',function(newValue,oldValue){
            $scope.currentUser = newValue;
-        if($scope.currentUser.id !== undefined){
+        if($scope.currentUser!== undefined && $scope.currentUser.id !== undefined){
             addressService.getUserAddresses($scope.currentUser.id).then(function(response){
                 $scope.ucas = response;
                 console.log("Ucas",$scope.ucas);
@@ -26,11 +27,18 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
         }
     });
 
-    $scope.$watch('addressService.userAddresses.length',function(){
+    $scope.$watch('addressService.userAddresses.length',function(newValue,oldValue){
         console.log("Watching ",$scope.addressService.userAddresses.length);
-        addressService.getUserAddresses($scope.currentUser.id).then(function(response){
-            $scope.ucas = response;
-        });
+        if(newValue>=2){
+            $scope.showCommuteAdd = true;
+        }
+
+        if($scope.currentUser !== undefined && $scope.currentUser.id !== undefined){
+            addressService.getUserAddresses($scope.currentUser.id).then(function(response){
+                $scope.ucas = response;
+            });
+        }
+
     });
 
 

@@ -1,29 +1,31 @@
 <div id="userProfileDiv">
-    <div class="span3" ng-controller="ProfileController">
-          This is where I will be entering my profile info
-        <form name="userForm">
+    <div ng-controller="ProfileController">
+        <div modal="isProfileModalOpen" options="opts">
+
+            <div class="row-fluid">
+                Gender?
+                <input type="radio" ng-model="user.sex" value="male">Male
+                <input type="radio" ng-model="sex" value="female" class="clearfix">Female
+            </div>
+            <div class="row-fluid">
+                Email : <input type="text" ng-model="email" required/>
+            </div>
+            <div class="row-fluid">
+                Cell Phone : <input type="text" ng-model="mobile" required/>
+            </div>
+
+            <button class="btn btn-primary" ng-click="submitProfile()">Add</button>
 
 
-              Name : <p>{{userName}}</p>
-              Employer: <p>{{userEmployer}}</p>
-              City: <p> {{userCity}}</p>
-              <img ng-src="{{imageUrl}}" />
-
-
-              Gender?
-            <input type="radio" ng-model="user.sex" value="male">Male
-            <input type="radio" ng-model="sex" value="female" class="clearfix">Female
-             Email : <input type="text" ng-model="email" required/>
-             Cell Phone : <input type="text" ng-model="mobile" required/>
-
-
-            <br/><br/>
+        </div>
 
 
 
 
-            <button ng-click="submitProfile()">Save</button>
-        </form>
+
+
+
+
 
     </div>
 </div>

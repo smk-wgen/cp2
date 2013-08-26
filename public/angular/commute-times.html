@@ -7,7 +7,7 @@
             [{{$index + 1}}] {{commute.label}} <a class="btn clearfix" href="/commutematches/{{commute.id}}">View matches</a>
         </li>
     </ul>
-    <button class="btn clearfix" ng-click="openCommuteModal()">Add a Commute</button>
+    <button ng-show="showCommuteAdd" class="btn clearfix" ng-click="openCommuteModal()">Add a Commute</button>
     <div modal="isCommuteModalOpen" close="closeCommuteModal()" options="opts">
         <div class="modal-header">Select a commute time</div>
         <p id="time"></p>

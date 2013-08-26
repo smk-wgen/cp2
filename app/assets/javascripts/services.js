@@ -18,12 +18,14 @@ servicesModule.factory('userService',function($http){
                  console.log("Response from backEnd for user",responseData);
                  if(responseData.isNew === false){
                      aUserService.currentUser = responseData.user;
+                     aUserService.currentUser.isNew = false;
                      console.log("Setting authenticated (currentUser) as",aUserService.currentUser);
                      console.log("User exists in our db..Now forward to dashboard");
                      result = true;
                  }
                  else{
                      console.log("New User..");
+                     aUserService.currentUser.isNew = true;
                      result = false;
                  }
 

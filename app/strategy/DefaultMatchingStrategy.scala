@@ -34,8 +34,8 @@ class DefaultMatchingStrategy extends MatchingStrategy{
     assert(bStartAddress != null, "Start Address cannot be null for " + bCommute)
     assert(aEndAddress != null, "End Address cannot be null for " + aCommute)
     assert(bEndAddress != null, "End Address cannot be null for " + bCommute)
-    val threshold:Double = 3.0;
-    timeOverlaps && aUser.gender.equals(bUser.gender) &&
+    val threshold:Double = 0.000003;
+    timeOverlaps /*&& aUser.gender.equals(bUser.gender)*/ &&
       AddressMatcher.isAddressMatch(aStartAddress,bStartAddress,threshold) &&
       AddressMatcher.isAddressMatch(aEndAddress,bEndAddress,threshold)
 
