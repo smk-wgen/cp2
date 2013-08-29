@@ -42,6 +42,14 @@ create table user_commute (
   foreign key(user_id)      references user(id)
 );
 
+create table user_connection(
+  from_user mediumint not null,
+  to_user mediumint not null,
+  commute_id mediumint not null,
+  foreign key(from_user) references user(id),
+  foreign key(to_user) references user(id),
+  foreign key(commute_id) references user_commute(id)
+);
 
 
 
@@ -49,10 +57,10 @@ create table user_commute (
 
 
 
-
+DROP TABLE user_connection;
 
 DROP TABLE user_commute;
 
 DROP TABLE user_address;
 
-DROP TABLE User;
+DROP TABLE user;

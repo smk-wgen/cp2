@@ -20,7 +20,10 @@ object CommuteMapper {
       user = User.findById(commute.user).get
       startTime = computeTime(commute.startTime)
       endTime = computeTime(commute.endTime)
-    } yield UserCommuteView(startTime,endTime,user.id.get,user.name,startAddress,endAddress,commute.startAddress,commute.endAddress,commute.id.get)
+      imgSrc = if(user.imageUrl.isEmpty)   "/assets/images/personal_user_128.png" else user.imageUrl
+      title = user.employer
+    } yield UserCommuteView(startTime,endTime,user.id.get,user.name,startAddress,endAddress,commute.startAddress,
+        commute.endAddress,commute.id.get,imgSrc,title)
 
     viewList
   }

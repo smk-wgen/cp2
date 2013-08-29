@@ -1,6 +1,7 @@
 drop database cp2;
 create database cp2;
 use cp2;
+drop table if exists user_connection;
 drop table if exists user_commute;
 drop table if exists user_address;
 drop table if exists user;
@@ -45,6 +46,15 @@ create table user_commute (
   foreign key(from_address)   references user_address(id),
   foreign key(to_address)   references user_address(id),
   foreign key(user_id)      references user(id)
+);
+
+create table user_connection(
+  from_user mediumint not null,
+  to_user mediumint not null,
+  commute_id mediumint not null,
+  foreign key(from_user) references user(id),
+  foreign key(to_user) references user(id),
+  foreign key(commute_id) references user_commute(id)
 );
 
 

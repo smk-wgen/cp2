@@ -17,6 +17,8 @@ POST        /user                             controllers.Application.createUser
 POST        /address                          controllers.Application.postAddress
 POST        /usercommute                      controllers.Application.postCommute
 
+POST       /connect                           controllers.Application.connect
+
 
 # Javascript routing
 GET         /assets/javascripts/routes        controllers.Application.javascriptRoutes

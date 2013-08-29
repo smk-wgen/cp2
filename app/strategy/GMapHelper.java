@@ -46,11 +46,15 @@ public class GMapHelper {
     private static String formatAddress(UserAddress address){
         StringBuffer sb = new StringBuffer();
         sb.append(address.line1().replace(' ','+'));
+        sb.append('+');
         sb.append(address.line2().replace(' ','+'));
+        sb.append('+');
         sb.append(address.city().replace(' ','+'));
+        sb.append('+');
         sb.append(address.state().replace(' ','+'));
+        sb.append('+');
         sb.append(address.zip());
-        System.out.println(sb.toString());
+        System.out.println("AddressString =" + sb.toString());
         return sb.toString();
 
     }

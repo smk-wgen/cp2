@@ -7,7 +7,11 @@ import play.api.libs.json._
 import services.MatchingService
 import mappers.CommuteMapper
 import play.api.Play
+import play.api.db.DB
+import anorm._
+import play.api.Play.current
 
+import scala.Some
 
 
 object Application extends Controller {
@@ -123,7 +127,7 @@ object Application extends Controller {
        case Some(dbCommute) => {
          val allCommutes:List[UserCommute] = UserCommute.findAllCommutes
          val matchingCommutes:List[UserCommute] = MatchingService.getMatches(dbCommute,allCommutes)
-          Ok(views.html.commutelist(CommuteMapper.buildCommutes(matchingCommutes)))
+          Ok(views.html.commutelist(CommuteMapper.buildCommutes(matchingCommutes),dbCommute.user))
          //Ok(Json.toJson(matchingCommutes))
        }
        case _ => BadRequest("Didnt find the commute record")
@@ -150,6 +154,30 @@ object Application extends Controller {
         BadRequest("Didnt find user in db")
       }
     }
+
+  }
+
+  def connect = Action(parse.json){  req =>
+    val json = req.body
+    val fromUser = json.\("fromUserId").as[Long]
+    val toUser = json.\("toUserId").as[Long]
+    val commuteId = json.\("commuteId").as[Long]
+
+    DB.withConnection {
+      implicit connection =>
+        SQL("insert into user_connection(from_user,to_user, commute_id) " +
+          "values ({from_user},{to_user}, {commute_id});").on(
+          'from_user -> fromUser,
+          'to_user -> toUser,
+          'commute_id -> commuteId
+
+
+        ).executeInsert()
+
+
+    }
+
+    Ok(Json.obj("message" -> "success"))
 
   }
 

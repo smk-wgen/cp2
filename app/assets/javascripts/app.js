@@ -5,5 +5,6 @@
 
 
 angular.module('profiler',['appServices','ui.bootstrap']);
+angular.module('connections',['appServices','ui.bootstrap']);
 // A Controller for your app
 

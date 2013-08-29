@@ -1,20 +1,26 @@
-@(commutes:List[UserCommuteView])
+@(commutes:List[UserCommuteView],curUserId:Long)
 <!DOCTYPE html>
 <html>
     <head>
         <title>Matches </title>
         @common.render()
-
+            <script src="@routes.Assets.at("javascripts/appcontrollers/ConnectionController.js")"></script>
 
     </head>
-    <body>
-        Your matches
+    <body ng-app="connections">
+        <div ng-show="@commutes.length == 0">
+              Sorry we didnt find any matches
+        </div>
+        <div ng-show="@commutes.length > 0" ng-controller="ConnectionController">
+           Your matches
 
             <ul>
             @commutes.map { commute =>
-                <li>@commute.userName @commute.startAddress @commute.endAddress @commute.startTime @commute.endTime</li>
+                <li><img ng-src="{{@commute.imgSrc}}" /> @commute.userName @commute.title <button ng-click="addConnection(@curUserId,@commute.userId,@commute.commuteId)" class="btn">Connect!</button> </li>
             }
             </ul>
+        </div>
+
 
     </body>
 </html>
