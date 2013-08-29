@@ -33,6 +33,7 @@ function ProfileController($scope,userService,$http){
         $scope.linkedInId = userService.currentUser.linkedInMemberId;
         $scope.userName = userService.currentUser.name;
         $scope.userEmployer = userService.currentUser.title || userService.currentUser.employer;
+        $scope.sex = userService.currentUser.sex;
     };
     $scope.submitProfile = function(){
         if($scope.imageUrl === undefined){
