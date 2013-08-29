@@ -47,13 +47,13 @@
         </script>
 
         <div id="theDiv" ng-controller="LinkedInController">
-                     Authenticated: {{authenticated}}, New? : {{isNew}}
+
 
 
                         <div ng-include="'/assets/angular/profile-form.html'"></div>
 
 
-                <div id="dashboardDiv"  ng-show="authenticated && !isNew">
+                <div id="dashboardDiv"  ng-show="authenticated">
 
                         <div ng-include="'/assets/angular/profile.html'">
                             Hello , Someone
