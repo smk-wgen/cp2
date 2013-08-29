@@ -1,4 +1,4 @@
-@(title: String)
+@(title: String,key:String)
 <!DOCTYPE html>
 
 <html ng-app="profiler">
@@ -16,7 +16,7 @@
     <body>
 
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">
-            api_key: 91zpl9j92hr9
+            api_key: @key
             onLoad: onLinkedInLoad
             authorize: false
         </script>

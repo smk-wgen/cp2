@@ -6,13 +6,15 @@ import models.{UserCommute, UserAddress, User}
 import play.api.libs.json._
 import services.MatchingService
 import mappers.CommuteMapper
-import anorm._
+import play.api.Play
+
 
 
 object Application extends Controller {
   
   def index = Action {
-    Ok(views.html.main("LandingPage"))
+    val apiKey = Play.current.configuration.getString("linkedin.api.key").getOrElse("91zpl9j92hr9")
+    Ok(views.html.main("LandingPage",apiKey))
   }
 
   def dashboard(id:Long) = Action{
