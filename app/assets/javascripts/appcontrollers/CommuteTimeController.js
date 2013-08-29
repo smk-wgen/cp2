@@ -10,6 +10,7 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
     $scope.addressService = addressService;
     $scope.commutes = [];
     $scope.currentUser = '';
+    $scope.label = 'To Work';
     $scope.showCommuteAdd = false;
     $scope.commuteStartTimes = [{'label' :'Before 6 am'},{'label':'6 am - 7 am'},{'label':'7 am - 8 am'},{'label':'8 am - 9 am'},
         {'label':'After 9 am'}]; //];

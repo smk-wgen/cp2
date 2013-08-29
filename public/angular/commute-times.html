@@ -20,7 +20,7 @@
 
             <div class="row-fluid">
                 <div class="span3">
-                    Name your commute
+                    Name your commute (ex. ToWork)
                 </div>
                 <div class="span3">
                     Select start address
@@ -33,10 +33,10 @@
                 </div>
             </div>
             <div class="row-fluid">
-                <input class="span3" type="text" name="label" ng-model="label"/>
-                <select class="span3" ng-model="startaddress" ng-options="c.label for c in ucas"></select>
-                <select class="span3" ng-model="timeInterval" ng-required="true" ng-options="interval.label for interval in commuteStartTimes"></select>
-                <select class="span3" ng-model="endaddress" ng-options="c.label for c in ucas | filter:isNotSameAsStart"></select>
+                <input class="span3" type="text" name="label" ng-model="label" required/>
+                <select class="span3" ng-model="startaddress" ng-options="c.label for c in ucas" required></select>
+                <select class="span3" ng-model="timeInterval" ng-required="true" ng-options="interval.label for interval in commuteStartTimes" required></select>
+                <select class="span3" ng-model="endaddress" ng-options="c.label for c in ucas | filter:isNotSameAsStart" required></select>
             </div>
 
 
@@ -44,8 +44,11 @@
             <!--<label>Select end address</label>-->
             <!--<select id = "endAddressId" ng-model="endAddress" ng-options="uca as uca.label for uca in ucas">-->
 
-            <button class="btn btn-primary" ng-click="submitCommute()">Save</button>
-            <button class="btn btn-secondary" ng-click="closeCommuteModal()">Cancel</button>
+             <div class="row-fluid">
+                 <button class="btn btn-primary" ng-disabled="startaddress.length ==0 && timeInterval.length==0 && endaddress.length" ng-click="submitCommute()">Save</button>
+                 <button class="btn btn-secondary" ng-click="closeCommuteModal()">Cancel</button>
+             </div>
+
 
 
 

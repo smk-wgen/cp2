@@ -4,12 +4,12 @@
 function AddressController($scope,addressService,userService){
     'use strict';
     $scope.addresses = [];
-    $scope.line1 = "Street name";
-    $scope.label = "Label of Address";
-    $scope.line2 = '';
-    $scope.city = "Chewburg";
-    $scope.state = "PA";
-    $scope.zip = 10944;
+    $scope.line1 = "130 Madison Ave";
+
+    $scope.line2 = '2nd Floor';
+    $scope.city = "New York";
+    $scope.state = "NY";
+    $scope.zip = 10016;
     $scope.isAddressModalOpen = false;
     $scope.userService = userService;
     $scope.currentUser = undefined;
@@ -20,6 +20,7 @@ function AddressController($scope,addressService,userService){
         addressListPromise.then(function(response){
 
             $scope.addresses = response;
+            $scope.label = "Address" + $scope.addresses.length;
             angular.forEach($scope.addresses,function(address){
                 console.log("Label of Address",address.label);
             });
@@ -55,6 +56,7 @@ function AddressController($scope,addressService,userService){
         promise.then(function(response){
              $scope.isAddressModalOpen = false;
              $scope.addresses.push(response);
+             $scope.label = 'Address'+$scope.addresses.length;
         },function(errResponse){
             alert("Something went wrong");
             console.error(errResponse.data);
