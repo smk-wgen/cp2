@@ -15,9 +15,9 @@ function AddressController($scope,addressService,userService){
     $scope.userService = userService;
     $scope.currentUser = undefined;
 
-    var getAddresses = function(){
+    var getAddresses = function(id){
 
-        var addressListPromise = addressService.getUserAddresses($scope.currentUser.id);
+        var addressListPromise = addressService.getUserAddresses(id);
         addressListPromise.then(function(response){
 
             $scope.addresses = response;
@@ -29,12 +29,10 @@ function AddressController($scope,addressService,userService){
     $scope.$watch('userService.currentUser.id',function(newValue, oldValue){
            if(newValue !== undefined || newValue != null){
 
-                 console.log("Address Controller, New Value of current User Id",newValue);
-                 $scope.currentUser = newValue;
-                 if($scope.currentUser.id !== undefined){
-                     getAddresses();
 
-                 }
+                     getAddresses(newValue);
+
+
 
            }
     });

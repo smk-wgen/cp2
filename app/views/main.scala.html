@@ -15,12 +15,27 @@
     </head>
     <body>
          <div class="row-fluid">
-             <div class="span6">
-                 <h3><a href="/assets/about.html">What is this</a></h3>
+             <div class="span7">
+                 <h3 class="row-fluid"><a href="https://docs.google.com/forms/d/17kR4luzPJkVEsygwP6qOOuwXdygHjrsoQIPWGLcvokw/viewform">Feedback</a> </h3>
+                 <div class="row-fluid" id="theDiv" ng-controller="LinkedInController">
+
+
+
+                     <div ng-include="'/assets/angular/profile-form.html'"></div>
+
+
+                     <div id="dashboardDiv"  ng-show="authenticated">
+
+                         <div ng-include="'/assets/angular/profile.html'">
+                             Hello , Someone
+                         </div>
+                     </div>
+                 </div>
              </div>
-             <div class="span6">
-                 <h3><a href="https://docs.google.com/forms/d/17kR4luzPJkVEsygwP6qOOuwXdygHjrsoQIPWGLcvokw/viewform">Feedback</a> </h3>
+             <div class="span5">
+                 <div ng-include src="'/assets/about.html'"></div>
              </div>
+
          </div>
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">
             api_key: @key
@@ -53,20 +68,7 @@
 
         </script>
 
-        <div id="theDiv" ng-controller="LinkedInController">
 
-
-
-                        <div ng-include="'/assets/angular/profile-form.html'"></div>
-
-
-                <div id="dashboardDiv"  ng-show="authenticated">
-
-                        <div ng-include="'/assets/angular/profile.html'">
-                            Hello , Someone
-                        </div>
-                </div>
-        </div>
 
     </body>
 </html>

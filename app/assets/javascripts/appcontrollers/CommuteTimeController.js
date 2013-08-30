@@ -9,19 +9,20 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
     $scope.userService = userService;
     $scope.addressService = addressService;
     $scope.commutes = [];
-    $scope.currentUser = '';
+    $scope.currentUserId = null;
     $scope.label = 'To Work';
     $scope.showCommuteAdd = false;
     $scope.commuteStartTimes = [{'label' :'Before 6 am'},{'label':'6 am - 7 am'},{'label':'7 am - 8 am'},{'label':'8 am - 9 am'},
         {'label':'After 9 am'}]; //];
     $scope.timeInterval = '';
-    $scope.$watch('userService.currentUser',function(newValue,oldValue){
-           $scope.currentUser = newValue;
-        if($scope.currentUser!== undefined && $scope.currentUser.id !== undefined){
-            addressService.getUserAddresses($scope.currentUser.id).then(function(response){
+    $scope.$watch('userService.currentUser.id',function(newValue,oldValue){
+
+        if(newValue !== undefined){
+            $scope.currentUserId = newValue;
+            addressService.getUserAddresses($scope.currentUserId).then(function(response){
                 $scope.ucas = response;
                 console.log("Ucas",$scope.ucas);
-                getUserCommutes();
+                getUserCommutes($scope.currentUserId);
             });
 
 
@@ -34,8 +35,8 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
             $scope.showCommuteAdd = true;
         }
 
-        if($scope.currentUser !== undefined && $scope.currentUser.id !== undefined){
-            addressService.getUserAddresses($scope.currentUser.id).then(function(response){
+        if($scope.currentUserId != null){
+            addressService.getUserAddresses($scope.currentUserId).then(function(response){
                 $scope.ucas = response;
             });
         }
@@ -47,8 +48,8 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
     $scope.startaddress = '';
     $scope.endaddress = '';
 
-    var getUserCommutes = function(){
-        var commuteListPromise = commuteService.getUserCommutes($scope.currentUser.id);
+    var getUserCommutes = function(id){
+        var commuteListPromise = commuteService.getUserCommutes(id);
         commuteListPromise.then(function(response){
 
             $scope.commutes = response;
@@ -81,6 +82,7 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
         return $scope.startaddress.label !== address.label;
     };
     $scope.submitCommute = function(){
+        var user = userService.currentUser;
         var timeInterval = getTimeInterval();
         $scope.startTimeAsInt = timeInterval.start;
         $scope.endTimeAsInt = timeInterval.end;
@@ -92,7 +94,7 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
          endAddress: $scope.endaddress.id,
          startTime: $scope.startTimeAsInt,
          endTime: $scope.endTimeAsInt ,
-         user : $scope.currentUser.id
+         user : user.id
         };
         console.log(commute);
         var promisedCommute = commuteService.addUserCommute(commute);
