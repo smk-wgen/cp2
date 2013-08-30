@@ -7,7 +7,7 @@ function AddressController($scope,addressService,userService){
     $scope.label = "Address" + $scope.addresses.length;
     $scope.line1 = "130 Madison Ave";
 
-    $scope.line2 = '2nd Floor';
+    $scope.line2 = '';
     $scope.city = "New York";
     $scope.state = "NY";
     $scope.zip = 10016;

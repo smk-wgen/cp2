@@ -47,8 +47,11 @@ public class GMapHelper {
         StringBuffer sb = new StringBuffer();
         sb.append(address.line1().replace(' ','+'));
         sb.append('+');
-        sb.append(address.line2().replace(' ','+'));
-        sb.append('+');
+        if(!address.line2().isEmpty()){
+            sb.append(address.line2().replace(' ','+'));
+            sb.append('+');
+        }
+
         sb.append(address.city().replace(' ','+'));
         sb.append('+');
         sb.append(address.state().replace(' ','+'));
