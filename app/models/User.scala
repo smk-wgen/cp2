@@ -26,7 +26,7 @@ object User{
       (__ \ "linkedInId").read[String] and
       (__ \ "cell").read[String] and
       (__ \ "imageUrl").read[String] and
-      (__ \ "employer").read[String] and
+      (__ \ "title").read[String] and
       (__ \ "city").read[String] and
       (__ \ "gender").read[String]
     )(User.apply _)
@@ -45,7 +45,7 @@ object User{
       (__ \ "linkedInId").write[String] and
       (__ \ "cell").write[String] and
       (__ \ "imageUrl").write[String] and
-      (__ \ "employer").write[String] and
+      (__ \ "title").write[String] and
       (__ \ "city").write[String] and
       (__ \ "gender").write[String]
     )(unlift(User.unapply))
@@ -94,7 +94,7 @@ object User{
           case None => System.out.println("Error ")
         }
         val dbUser:User = user.copy(id = Id(maybeId.get))
-
+        System.out.println("DB User " + dbUser)
         dbUser
     }
   }

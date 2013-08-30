@@ -48,9 +48,10 @@ object Application extends Controller {
     System.out.println(json)
     json.validate[User].fold(
       valid = (user => {
-            System.out.println(user)
             val dbUser = User.create(user)
-            Ok(Json.toJson(dbUser))
+            val userJson = Json.toJson(dbUser)
+            System.out.println("Json User" + userJson)
+            Ok(userJson)
       }),
       invalid = (e => {
 

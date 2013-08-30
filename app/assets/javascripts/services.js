@@ -26,6 +26,7 @@ servicesModule.factory('userService',function($http){
                  else{
                      console.log("New User..");
                      aUserService.currentUser.isNew = true;
+                     console.log("User Object",aUserService.currentUser);
                      result = false;
                  }
 

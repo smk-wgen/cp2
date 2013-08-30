@@ -11,7 +11,8 @@ object MatchingService {
   val strategy:MatchingStrategy = new DefaultMatchingStrategy()
   def getMatches(usersCommute:UserCommute,otherCommutes:List[UserCommute]):List[UserCommute] = {
       val matches:List[UserCommute] = otherCommutes.filter(commute => {
-        commute.id != usersCommute.id   && strategy.isMatch(commute,usersCommute)
+        commute.id != usersCommute.id   && usersCommute.user != commute.user &&
+          strategy.isMatch(commute,usersCommute)
 
       })
       matches

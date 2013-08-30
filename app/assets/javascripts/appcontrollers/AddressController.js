@@ -4,6 +4,7 @@
 function AddressController($scope,addressService,userService){
     'use strict';
     $scope.addresses = [];
+    $scope.label = "Address" + $scope.addresses.length;
     $scope.line1 = "130 Madison Ave";
 
     $scope.line2 = '2nd Floor';
@@ -20,17 +21,15 @@ function AddressController($scope,addressService,userService){
         addressListPromise.then(function(response){
 
             $scope.addresses = response;
-            $scope.label = "Address" + $scope.addresses.length;
-            angular.forEach($scope.addresses,function(address){
-                console.log("Label of Address",address.label);
-            });
+
+
         });
     };
 
-    $scope.$watch('userService.currentUser',function(newValue, oldValue){
+    $scope.$watch('userService.currentUser.id',function(newValue, oldValue){
            if(newValue !== undefined || newValue != null){
-                 console.log("Value of currentUser just changed");
-                 console.log("New Value ",newValue);
+
+                 console.log("Address Controller, New Value of current User Id",newValue);
                  $scope.currentUser = newValue;
                  if($scope.currentUser.id !== undefined){
                      getAddresses();
@@ -41,7 +40,8 @@ function AddressController($scope,addressService,userService){
     });
 
     $scope.addAddress = function(){
-        console.log("Adding an address for user",$scope.currentUser.id);
+        var user = userService.currentUser;
+        console.log("Adding an address for user",user.id);
         var addressPostJson = {
           id : '',
           label : $scope.label,
@@ -50,7 +50,7 @@ function AddressController($scope,addressService,userService){
           city : $scope.city,
           zip : $scope.zip,
           state : $scope.state,
-          userId : $scope.currentUser.id
+          userId : user.id
         };
         var promise = addressService.addUserAddress(addressPostJson);
         promise.then(function(response){

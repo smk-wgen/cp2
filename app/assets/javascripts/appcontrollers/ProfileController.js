@@ -10,11 +10,11 @@ function ProfileController($scope,userService,$http){
     $scope.isProfileModalOpen = $scope.authenticated && $scope.isNew;
     $scope.email = "abc@example.com";
     $scope.sex = "male";
-    $scope.userEmployer = "Acme Inc";
+    $scope.title = "Acme Inc";
     $scope.mobile = "000-000-0000";
     $scope.userService = userService;
 
-    $scope.$watch('userService.currentUser',function(newValue, oldValue){
+    $scope.$watch('userService.currentUser.id',function(newValue, oldValue){
 
 
        if(newValue){
@@ -23,7 +23,6 @@ function ProfileController($scope,userService,$http){
 
     });
     $scope.$watch('userService.currentUser.isNew',function(newValue,oldValue){
-       console.log("In watch",newValue,$scope.authenticated);
        if(newValue !== undefined && newValue == true && $scope.authenticated){
              $scope.isProfileModalOpen = true;
        }
@@ -32,21 +31,29 @@ function ProfileController($scope,userService,$http){
         $scope.imageUrl = userService.currentUser.imageUrl || '/assets/images/personal_user_128.png';
         $scope.linkedInId = userService.currentUser.linkedInMemberId;
         $scope.userName = userService.currentUser.name;
-        $scope.userEmployer = userService.currentUser.title || userService.currentUser.employer;
+        $scope.title = userService.currentUser.title || userService.currentUser.employer;
         $scope.sex = userService.currentUser.sex;
     };
     $scope.submitProfile = function(){
-        if($scope.imageUrl === undefined){
-            $scope.imageUrl = '';
+        var newUser = userService.currentUser;
+        if(newUser.imageUrl === undefined){
+            newUser.imageUrl = '';
         }
-        var userBody = { id: '',name: $scope.userName, employer: $scope.userEmployer,
-            city: $scope.userCity, gender: $scope.sex , email : $scope.email , cell : $scope.mobile,
-            imageUrl : $scope.imageUrl, linkedInId : $scope.linkedInId};
+        newUser.sex = $scope.sex;
+        newUser.mobile = $scope.mobile;
+        newUser.email = $scope.email;
+
+        var userBody = { id: '',name: newUser.name, title: newUser.title,
+            city: 'HardCode', gender: newUser.sex , email : newUser.email , cell : newUser.mobile,
+            imageUrl : newUser.imageUrl, linkedInId : newUser.linkedInMemberId};
         console.log("Post Payload User",userBody);
         $http.post("/user",userBody )
             .success(function(response){
-                console.log("Submmit user success",response.data);
-                userService.currentUser = response.data;
+                console.log("Submit user success",response);
+                userService.currentUser = response;
+                $scope.sex = userService.currentUser.gender;
+                $scope.title  = userService.currentUser.title;
+                $scope.userName = userService.currentUser.name;
                 $scope.isProfileModalOpen = false;
 
 

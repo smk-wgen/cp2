@@ -9,6 +9,7 @@ function LinkedInController($scope,userService){
         $scope.authenticated = true;
 
         userService.currentUser = liUser;
+        console.log("Setting basic user object after Linkedin Auth",userService.currentUser);
         var someResultPromise = userService.isRegistered(liUser.linkedInMemberId);
            someResultPromise.then(function(result){
                console.log("Result of 2nd promise",result," So user exists =",result);

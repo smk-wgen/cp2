@@ -16,7 +16,7 @@
 
             <ul>
             @commutes.map { commute =>
-                <li><img ng-src="{{@commute.imgSrc}}" /> @commute.userName @commute.title <button ng-click="addConnection(@curUserId,@commute.userId,@commute.commuteId)" class="btn">Connect!</button> </li>
+                <li> @commute.userName @commute.title <button ng-click="addConnection(@curUserId,@commute.userId,@commute.commuteId)" class="btn">Connect!</button> </li>
             }
             </ul>
         </div>
