@@ -14,7 +14,7 @@ import models.User.{PkWriter, PkReader}
 /**
  * Created by skunnumkal on 7/1/13.
  */
-case class UserAddress(id: Pk[Long],label:String,line1:String,line2:String,city:String,state:String,zip:Int,user:Long)
+case class UserAddress(id: Pk[Long],label:String,line1:String,line2:String,city:String,state:String,zip:String,user:Long)
 
 object UserAddress{
 
@@ -25,7 +25,7 @@ object UserAddress{
       (__ \ "line2").read[String] and
       (__ \ "city").read[String] and
       (__ \ "state").read[String] and
-      (__ \ "zip").read(StringToIntReader) and
+      (__ \ "zip").read[String] and
       (__ \ "userId").read(StringToLongReader)
     )(UserAddress.apply _)
 
@@ -54,7 +54,7 @@ object UserAddress{
       (__ \ "line2").write[String] and
       (__ \ "city").write[String] and
       (__ \ "state").write[String] and
-      (__ \ "zip").write[Int] and
+      (__ \ "zip").write[String] and
       (__ \ "user").write[Long]
     )(unlift(UserAddress.unapply))
 
@@ -103,7 +103,7 @@ object UserAddress{
       get[String]("user_address.line2") ~
       get[String]("user_address.city") ~
       get[String]("user_address.state")~
-      get[Int]("user_address.zip")~
+      get[String]("user_address.zip")~
       get[Long]("user_address.user_id")map {
       case id~label~line1~line2~city~state~zip~userId =>
         UserAddress(id, label,line1, line2, city,state, zip,userId)

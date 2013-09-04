@@ -29,7 +29,7 @@ create table user_address (
   line2                     varchar(255),
   city                      varchar(255) not null,
   state                     varchar(15) not null,
-  zip                       int not null,
+  zip                       varchar(15) not null,
   user_id                   mediumint not null,
   foreign key(user_id)      references user(id)
 );

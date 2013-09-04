@@ -15,14 +15,17 @@ object ApplicationBuild extends Build {
     "mysql" % "mysql-connector-java" % "5.1.18",
     "com.google.code.gson" % "gson" % "1.7.1",
     "org.apache.commons" % "commons-io" % "1.3.2",
-    "postgresql" % "postgresql" % "9.1-901-1.jdbc4"
+    "se.radley" %% "play-plugins-salat" % "1.3.0"
+
 
   )
 
   // Add your own project settings here
   val main = play.Project(appName, appVersion, appDependencies).settings(cloudBeesSettings :_*)
     .settings(
-    CloudBees.applicationId := Some("cp2sca1a")
+    CloudBees.applicationId := Some("cp2sca1a"),
+    routesImport += "se.radley.plugin.salat.Binders._",
+    templatesImport += "org.bson.types.ObjectId"
   )
 
 }

@@ -12,8 +12,7 @@ object AddressMatcher {
 
         val json1:JsValue = Json.parse(GMapHelper.getAddressJson(a))
         val json2:JsValue = Json.parse(GMapHelper.getAddressJson(b))
-        //println("Address response for a "+json1)
-        //println("Address response for b" + json2)
+
         val (lat1,lon1):(Double,Double) =  extractLatLong(json1)
         println("Latitude " + lat1+" , Longitude" + lon1)
         val (lat2,lon2):(Double,Double) = extractLatLong(json2)

@@ -18,7 +18,8 @@ object Application extends Controller {
   
   def index = Action {
     val apiKey = Play.current.configuration.getString("linkedin.api.key").getOrElse("91zpl9j92hr9")
-    Ok(views.html.main("LandingPage",apiKey))
+    //Ok(views.html.main("LandingPage",apiKey))
+    Ok(views.html.error())
   }
 
   def dashboard(id:Long) = Action{
