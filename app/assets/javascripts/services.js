@@ -45,14 +45,16 @@ servicesModule.factory('addressService',function($http,$q){
     var anAddressService = {
              userAddresses : [],
              getUserAddresses: function(id){
+                 //Temp hack for prototype
                  var deferredAddresses = $q.defer();
-                 $http.get('/addresses/'+id).then(function(response){
-                      anAddressService.userAddresses = response.data;
-                      deferredAddresses.resolve(response.data);
-                 },function(errResponse){
-                     console.error(errResponse.data);
-                     deferredAddresses.reject(errResponse.data);
-                 });
+                 deferredAddresses.resolve(anAddressService.userAddresses);
+//                 $http.get('/addresses/'+id).then(function(response){
+//                      anAddressService.userAddresses = response.data;
+//                      deferredAddresses.resolve(response.data);
+//                 },function(errResponse){
+//                     console.error(errResponse.data);
+//                     deferredAddresses.reject(errResponse.data);
+//                 });
                  return deferredAddresses.promise;
 
              },
@@ -60,9 +62,13 @@ servicesModule.factory('addressService',function($http,$q){
                  console.log("Create address payload",address);
                  var deferredAddress = $q.defer();
                  $http.post("/address", address).then(function(response){
-                         var addedAddress = response.data;
-                         anAddressService.userAddresses.push(addedAddress);
-                         deferredAddress.resolve(addedAddress);
+                         //Temp hack for prototype
+                         address.id = anAddressService.userAddresses.length+1;
+                         anAddressService.userAddresses.push(address)
+                         deferredAddress.resolve(address)
+                         //var addedAddress = response.data;
+                         //anAddressService.userAddresses.push(addedAddress);
+                         //deferredAddress.resolve(addedAddress);
                      },
                      function(errResponse){
                          console.error(errResponse.data);
@@ -78,20 +84,25 @@ servicesModule.factory('commuteService',function($http,$q){
          userCommutes : [],
          getUserCommutes : function(id){
              var deferredCommutes = $q.defer();
-             $http.get('/usercommutes/'+id).then(function(response){
-                 deferredCommutes.resolve(response.data);
-             },function(errResponse){
-                 console.error(errResponse);
-                 deferredCommutes.reject(errResponse.data);
-             });
+             deferredCommutes.resolve(aCommuteService.userCommutes);
+//             $http.get('/usercommutes/'+id).then(function(response){
+//                 deferredCommutes.resolve(response.data);
+//             },function(errResponse){
+//                 console.error(errResponse);
+//                 deferredCommutes.reject(errResponse.data);
+//             });
              return deferredCommutes.promise;
          } ,
          addUserCommute : function(commute){
              var deferredCommute = $q.defer();
+
              $http.post("/usercommute", commute).then(function(response){
-                 var aCommute = response.data;
-                 aCommuteService.userCommutes.push(aCommute);
-                 deferredCommute.resolve(aCommute);
+                 commute.id = aCommuteService.userCommutes.length+1;
+                 aCommuteService.userCommutes.push(commute);
+                 deferredCommute.resolve(commute);
+                 //var aCommute = response.data;
+                 //aCommuteService.userCommutes.push(aCommute);
+                 //deferredCommute.resolve(aCommute);
              },function(errResponse){
                  console.error(errResponse);
                  deferredCommute.reject(errResponse.data);

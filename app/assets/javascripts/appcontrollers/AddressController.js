@@ -6,7 +6,7 @@ function AddressController($scope,addressService,userService){
     $scope.addresses = [];
     $scope.label = "Address" + $scope.addresses.length;
     $scope.line1 = "130 Madison Ave";
-
+    $scope.addressString = "130 Madison Ave New York NY 10016";
     $scope.line2 = '';
     $scope.city = "New York";
     $scope.state = "NY";
@@ -40,15 +40,20 @@ function AddressController($scope,addressService,userService){
     $scope.addAddress = function(){
         var user = userService.currentUser;
         console.log("Adding an address for user",user.id);
+//        var addressPostJson = {
+//          id : '',
+//          label : $scope.label,
+//          line1 : $scope.line1,
+//          line2 : $scope.line2,
+//          city : $scope.city,
+//          zip : $scope.zip,
+//          state : $scope.state,
+//          userId : user.id
+//        };
         var addressPostJson = {
-          id : '',
-          label : $scope.label,
-          line1 : $scope.line1,
-          line2 : $scope.line2,
-          city : $scope.city,
-          zip : $scope.zip,
-          state : $scope.state,
-          userId : user.id
+            id : user.name,
+            label : $scope.label,
+            address : $scope.addressString
         };
         var promise = addressService.addUserAddress(addressPostJson);
         promise.then(function(response){

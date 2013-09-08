@@ -3,14 +3,12 @@
         <b>Your profile</b>
         <div class="row">
             <div class="span4">
-                <img ng-src="{{imageUrl}}" />
+                <img ng-src="{{userService.currentUser.imageUrl}}" />
             </div>
             <div class="span8">
-                <p>{{userName}}</p>
-                <p>{{title}}</p>
+                <p>{{userService.currentUser.name}}</p>
+                <p>{{userService.currentUser.title}}</p>
 
-
-                <p>{{sex}}</p>
             </div>
         </div>
     </div>

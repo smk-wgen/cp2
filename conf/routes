@@ -9,13 +9,13 @@ GET         /user/:id                         controllers.Application.findUser(i
 GET         /wizard                           controllers.Application.getWizard
 GET         /addresses/:id                    controllers.Application.getUserAddresses(id:Long)
 GET         /usercommutes/:id                 controllers.Application.getUserCommutes(id:Long)
-GET         /commutematches/:id               controllers.Application.getCommuteMatches(id:Long)
+GET         /commutematches/:id               controllers.Prototype.getCommuteMatches(id:Long)
 GET         /checkExists/:linkedInId          controllers.Application.findUserByLinkedInId(linkedInId:String)
 
 
 POST        /user                             controllers.Application.createUser
-POST        /address                          controllers.Application.postAddress
-POST        /usercommute                      controllers.Application.postCommute
+POST        /address                          controllers.Prototype.postAddress
+POST        /usercommute                      controllers.Prototype.postCommute
 
 POST       /connect                           controllers.Application.connect
 
