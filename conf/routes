@@ -9,7 +9,7 @@ GET         /usercommutes/:id                 controllers.Application.getUserCom
 GET         /commutematches/:id               controllers.Prototype.getCommuteMatches(id:Long)
 GET         /checkExists/:linkedInId          controllers.Application.findUserByLinkedInId(linkedInId:String)
 
-POST        /user                             controllers.Application.createUser
+POST        /user                             controllers.Application.createOrGetUser
 POST        /address                          controllers.Prototype.postAddress
 POST        /usercommute                      controllers.Prototype.postCommute
 

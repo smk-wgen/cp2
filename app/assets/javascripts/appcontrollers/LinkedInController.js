@@ -13,7 +13,7 @@ function LinkedInController($scope,userService){
             userService.currentUser.imageUrl =  '/assets/images/personal_user_128.png';
         }
         console.log("Setting basic user object after Linkedin Auth",userService.currentUser);
-        var someResultPromise = userService.isRegistered(liUser.linkedInMemberId);
+        var someResultPromise = userService.registerOrLogin(liUser);
            someResultPromise.then(function(result){
                console.log("Result of 2nd promise",result," So user exists =",result);
                if(result){

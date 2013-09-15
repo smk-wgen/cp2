@@ -10,29 +10,27 @@ servicesModule.factory('userService',function($http){
          getUser : function(id){
              console.log("Call the backend for the user");
          },
-         isRegistered  : function(id){
-             var userPromise = $http.get('/checkExists/'+id);
+          registerOrLogin  : function(user){
+             var userPromise = $http.post('/user',aUserService.currentUser);
              var result = null;
              var anotherPromise = userPromise.then(function(response){
                  var responseData = response.data;
                  console.log("Response from backEnd for user",responseData);
-                 if(responseData.isNew === false){
-                     aUserService.currentUser = responseData.user;
-                     aUserService.currentUser.isNew = false;
-                     console.log("Setting authenticated (currentUser) as",aUserService.currentUser);
-                     console.log("User exists in our db..Now forward to dashboard");
-                     result = true;
-                 }
-                 else{
-                     console.log("New User..");
-                     aUserService.currentUser.isNew = true;
-                     console.log("User Object",aUserService.currentUser);
-                     result = false;
-                 }
+                 aUserService.currentUser = responseData;
+
+                 console.log("Setting authenticated (currentUser) as",aUserService.currentUser);
+
+                 result = true;
+
+
 
                  return result;
 
 
+             },function(errResponse){
+                 console.error(errResponse);
+                 result = false;
+                 return result;
              });
 
              return anotherPromise;

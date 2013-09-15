@@ -5,11 +5,8 @@ function ProfileController($scope,userService,$http){
   'use strict';
 
 
-    $scope.userCity = "New York";
-    console.log("Profile Controller", $scope.authenticated,$scope.isNew);
+    console.log("Profile Controller. Is user authenticated?", $scope.authenticated);
     $scope.isProfileModalOpen = $scope.authenticated && $scope.isNew;
-    $scope.email = "abc@example.com";
-    $scope.sex = "male";
     $scope.title = "Acme Inc";
     $scope.mobile = "000-000-0000";
     $scope.userService = userService;
@@ -17,23 +14,13 @@ function ProfileController($scope,userService,$http){
     $scope.$watch('userService.currentUser.id',function(newValue, oldValue){
 
 
-       if(newValue){
-           $scope.fillUserForm();
+       if(newValue != undefined){
+           console.log("Got an authenticated user from backend with id",newValue);
+
        }
 
     });
-    $scope.$watch('userService.currentUser.isNew',function(newValue,oldValue){
-       if(newValue !== undefined && newValue == true && $scope.authenticated){
-             $scope.isProfileModalOpen = true;
-       }
-    });
-    $scope.fillUserForm = function(){
-        $scope.imageUrl = userService.currentUser.imageUrl || '/assets/images/personal_user_128.png';
-        $scope.linkedInId = userService.currentUser.linkedInMemberId;
-        $scope.userName = userService.currentUser.name;
-        $scope.title = userService.currentUser.title || userService.currentUser.employer;
-        $scope.sex = userService.currentUser.sex;
-    };
+
     $scope.submitProfile = function(){
         var newUser = userService.currentUser;
         if(newUser.imageUrl === undefined){

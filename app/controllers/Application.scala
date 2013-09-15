@@ -31,14 +31,14 @@ object Application extends Controller {
   }
 
 
-    def createUser = Action(parse.json) {
+    def createOrGetUser = Action(parse.json) {
     request =>
     val json = request.body
-    System.out.println(json)
+    System.out.println("In create or retrieve user.Json=" + json)
     json.validate[MongoUser].fold(
       valid = (user => {
 
-            val aUser:MongoUser = MongoUser.findByLinkedinId(user.linkedInId).getOrElse(
+            val aUser:MongoUser = MongoUser.findOneByLinkedinId(user.linkedInId).getOrElse(
                MongoUser.create(user)
             )
             val userJson = MongoUser.object2Json(user)

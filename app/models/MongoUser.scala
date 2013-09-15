@@ -19,7 +19,9 @@ import play.mvc.Results.Todo
 case class MongoUser(id: ObjectId = new ObjectId, username: String,title:String,linkedInId:String,
                      imageUrl:String,addresses:List[MongoUserAddress] = Nil)
 
-object MongoUser{
+object MongoUser extends ModelCompanion[MongoUser, ObjectId]{
+
+  val dao = new SalatDAO[MongoUser, ObjectId](collection = mongoCollection("users")) {}
 
   def json2Object(name:String,linkedInId:String,imageUrl:String,title:String) = new MongoUser(new ObjectId,name,title,linkedInId,imageUrl)
 
@@ -30,7 +32,7 @@ object MongoUser{
     )
     jsonObj
   }
-  def findByLinkedinId(linkedinId:String):Option[MongoUser] = None
+  def findOneByLinkedinId(linkedinId:String):Option[MongoUser] = dao.findOne(MongoDBObject("linkedInId" -> linkedinId))
 
 //  def addUserAddress(id:ObjectId,label:String,address:String) = {
 //    val maybeUser:Option[MongoUser] = dao.findOne(MongoDBObject("_id" -> id))
@@ -43,7 +45,10 @@ object MongoUser{
 //      case None => { throw new RuntimeException("Not found")}
 //    }
 //  }
-  def create(aMongoUser:MongoUser) = aMongoUser
+  def create(aMongoUser:MongoUser) = {
+    MongoUser.save(aMongoUser)
+    aMongoUser
+  }
 
   implicit val userReads = (
       (__ \ "username").read[String] and

@@ -55,10 +55,10 @@
                 IN.API.Profile("me").result(function(data){
                 angular.element($("#theDiv")).scope().setAuthenticatedUser(
             {
-                                                name : data.values[0].firstName+' '+data.values[0].lastName,
+                                                username : data.values[0].firstName+' '+data.values[0].lastName,
                                                 title : data.values[0].headline,
                                                 imageUrl : data.values[0].pictureUrl,
-                                                linkedInMemberId : data.values[0].id
+                                                linkedInId : data.values[0].id
                                                 }
             );
               }).error(function(data){
