@@ -3,12 +3,12 @@
  */
 function LinkedInController($scope,userService){
     $scope.authenticated = false;
-    $scope.isNew = true;
-
+    $scope.userName = "Someone";
     $scope.setAuthenticatedUser = function(liUser){
         $scope.authenticated = true;
 
         userService.currentUser = liUser;
+        $scope.userName = userService.currentUser.name;
         if(liUser.imageUrl == undefined){
             userService.currentUser.imageUrl =  '/assets/images/personal_user_128.png';
         }
@@ -20,6 +20,8 @@ function LinkedInController($scope,userService){
                    $scope.isNew = false;
                }
 
+           },function(errResponse){
+               console.error("Didn't create or check user",errResponse);
            });
 
 

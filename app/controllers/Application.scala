@@ -2,7 +2,7 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models.{UserCommute, UserAddress, User}
+import models.{MongoUser, UserCommute, UserAddress, User}
 import play.api.libs.json._
 import services.MatchingService
 import mappers.CommuteMapper
@@ -22,18 +22,6 @@ object Application extends Controller {
     //Ok(views.html.error())
   }
 
-  def dashboard(id:Long) = Action{
-    val maybeUser  = User.findById(id)
-    maybeUser match {
-      case Some(user) => Ok(views.html.dashboard(user))
-      case None => BadRequest("Could not find User")
-    }
-
-  }
-
-  def getWizard = Action{
-    Ok(views.html.profile())
-  }
 
   def javascriptRoutes = Action{
     implicit request =>
@@ -47,12 +35,16 @@ object Application extends Controller {
     request =>
     val json = request.body
     System.out.println(json)
-    json.validate[User].fold(
+    json.validate[MongoUser].fold(
       valid = (user => {
-            val dbUser = User.create(user)
-            val userJson = Json.toJson(dbUser)
+
+            val aUser:MongoUser = MongoUser.findByLinkedinId(user.linkedInId).getOrElse(
+               MongoUser.create(user)
+            )
+            val userJson = MongoUser.object2Json(user)
             System.out.println("Json User" + userJson)
             Ok(userJson)
+
       }),
       invalid = (e => {
 
@@ -61,13 +53,6 @@ object Application extends Controller {
     )
   }
 
-  def findUser(id:Long) = Action{
-    val maybeUser:Option[User] = User.findById(id)
-    maybeUser match{
-      case Some(user) => Ok(Json.toJson(user))
-      case None => BadRequest("Domain Record Not Found")
-    }
-  }
 
   def findUserByLinkedInId(linkedInId:String) = Action {
 
@@ -90,23 +75,25 @@ object Application extends Controller {
 
   }
 
-    def postAddress = Action(parse.json) {req =>
-      val json = req.body
-      System.out.println("Json is " + json)
-      json.validate[UserAddress].fold(
-       valid  = (address => {
-              val dbAddress = UserAddress.create(address)
-              dbAddress match {
-                case Some(storedAddress) => Ok(Json.toJson(storedAddress))
-                case None => ServiceUnavailable("Internal server error")
-              }
-       }),
-      invalid = (e => {      println(e)
-        BadRequest("Detected error " + JsError.toFlatJson(e))})
-      )
+//    def postAddress = Action(parse.json) {req =>
+//      val json = req.body
+//      System.out.println("Json is " + json)
+//      val label = json.\("label").as[String]
+//      val addressStr = json.\("address").as[String]
+//      val userId = json.\("user").as[String]
+//
+//      val maybeUser:Option[MongoUser] = MongoUser.findOneById(userId)
+//      maybeUser match {
+//        case Some(user) => {
+//           MongoUser.addUserAddress(user.id,label,addressStr)
+//          Ok("Done")
+//        }
+//        case None => {
+//          BadRequest("Detected error")
+//        }
+//        }
+//      }
 
-
-    }
 
     def postCommute = Action(parse.json){ req =>
         val json = req.body
@@ -138,10 +125,6 @@ object Application extends Controller {
     }
 
 
-  def getUserAddresses(id:Long) = Action {
-    val addressList:List[UserAddress] = UserAddress.findAddressesByUser(id)
-    Ok(Json.toJson(addressList))
-  }
 
   def getUserCommutes(id:Long) = Action{
 

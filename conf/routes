@@ -4,14 +4,10 @@
 
 # Home page
 GET         /                                 controllers.Application.index
-GET         /dashboard/:id                    controllers.Application.dashboard(id:Long)
-GET         /user/:id                         controllers.Application.findUser(id:Long)
-GET         /wizard                           controllers.Application.getWizard
-GET         /addresses/:id                    controllers.Application.getUserAddresses(id:Long)
+#GET         /user/:id                         controllers.Application.findUser(id:Long)
 GET         /usercommutes/:id                 controllers.Application.getUserCommutes(id:Long)
 GET         /commutematches/:id               controllers.Prototype.getCommuteMatches(id:Long)
 GET         /checkExists/:linkedInId          controllers.Application.findUserByLinkedInId(linkedInId:String)
-
 
 POST        /user                             controllers.Application.createUser
 POST        /address                          controllers.Prototype.postAddress

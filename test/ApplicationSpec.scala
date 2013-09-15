@@ -31,33 +31,7 @@ class ApplicationSpec extends Specification {
 //      }
 //    }
 
-    "respond to the create User Action" in {
-      running(FakeApplication()){
-        val mockJsValue = Json.obj(
-          "id" -> "",
-          //"name" -> "Testing my mistakes",
-          "email" -> "abc@example.com",
-          "cell" -> "999-000-9494",
-          "imageUrl" -> "someping.jpg",
-          "linkedInId" -> "www.linkedIn.com",
-          "gender" -> "male",
-          "employer" -> "JPHM",
-          "city" ->  "2004-12-"
-        )
-        val result = controllers.Application.postMessage()(FakeRequest().withJsonBody(mockJsValue)).map(
-        res => {
-          status(res) must equalTo(OK)
-          //contentType(res) must beSome("text/plain")
-         }
-        )
 
-
-
-        //charset(result) must beSome("utf-8")
-      }
-
-
-    }
 
   }
 }
