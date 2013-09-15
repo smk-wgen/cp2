@@ -51,29 +51,21 @@ object Application extends Controller {
             BadRequest("Detected error:"+ JsError.toFlatJson(e))
       })
     )
+    }
+
+  def getUserAddresses(id:String) = Action {
+    val maybeUser:Option[MongoUser] = MongoUser.findOneById(id)
+    maybeUser match {
+      case Some(user) => {
+             val userAddresses = user.addresses
+             Ok(Json.toJson(userAddresses))
+      }
+      case None => BadRequest("Couldnt find user")
+    }
   }
 
 
-  def findUserByLinkedInId(linkedInId:String) = Action {
 
-
-      val maybeExistingUser:Option[User] = User.findByLinkedInId(linkedInId)
-
-      maybeExistingUser match {
-          case Some(existingUser) => {
-            val jsRespBody = Json.obj("isNew" -> false,"user" -> existingUser)
-            Ok(Json.toJson(jsRespBody))
-          }
-          case None => {
-            val jsRespBody = Json.obj("isNew" -> true)
-            Ok(Json.toJson(jsRespBody))
-          }
-
-        }
-
-
-
-  }
 
 //    def postAddress = Action(parse.json) {req =>
 //      val json = req.body

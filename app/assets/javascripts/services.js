@@ -45,14 +45,14 @@ servicesModule.factory('addressService',function($http,$q){
              getUserAddresses: function(id){
                  //Temp hack for prototype
                  var deferredAddresses = $q.defer();
-                 deferredAddresses.resolve(anAddressService.userAddresses);
-//                 $http.get('/addresses/'+id).then(function(response){
-//                      anAddressService.userAddresses = response.data;
-//                      deferredAddresses.resolve(response.data);
-//                 },function(errResponse){
-//                     console.error(errResponse.data);
-//                     deferredAddresses.reject(errResponse.data);
-//                 });
+                 //deferredAddresses.resolve(anAddressService.userAddresses);
+                 $http.get('/addresses/'+id).then(function(response){
+                      anAddressService.userAddresses = response.data;
+                      deferredAddresses.resolve(response.data);
+                 },function(errResponse){
+                     console.error(errResponse.data);
+                     deferredAddresses.reject(errResponse.data);
+                 });
                  return deferredAddresses.promise;
 
              },

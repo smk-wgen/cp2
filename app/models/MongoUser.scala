@@ -34,6 +34,7 @@ object MongoUser extends ModelCompanion[MongoUser, ObjectId]{
   }
   def findOneByLinkedinId(linkedinId:String):Option[MongoUser] = dao.findOne(MongoDBObject("linkedInId" -> linkedinId))
 
+  def findOneById(id:String):Option[MongoUser] = dao.findOneById(id = new ObjectId(id))
 //  def addUserAddress(id:ObjectId,label:String,address:String) = {
 //    val maybeUser:Option[MongoUser] = dao.findOne(MongoDBObject("_id" -> id))
 //    maybeUser match {

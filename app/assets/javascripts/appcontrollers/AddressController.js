@@ -5,7 +5,6 @@ function AddressController($scope,addressService,userService){
     'use strict';
     $scope.addresses = [];
     $scope.label = "Address" + $scope.addresses.length;
-    $scope.line1 = "130 Madison Ave";
     $scope.addressString = "130 Madison Ave New York NY 10016";
     $scope.line2 = '';
     $scope.city = "New York";
