@@ -6,7 +6,7 @@
 GET         /                                 controllers.Application.index
 #GET         /user/:id                         controllers.Application.findUser(id:Long)
 GET          /addresses/:id                   controllers.Application.getUserAddresses(id:String)
-GET         /usercommutes/:id                 controllers.Application.getUserCommutes(id:Long)
+GET         /usercommutes/:id                 controllers.Application.getUserCommutes(id:String)
 GET         /commutematches/:id               controllers.Prototype.getCommuteMatches(id:Long)
 
 POST        /user                             controllers.Application.createOrGetUser

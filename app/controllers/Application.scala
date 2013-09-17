@@ -127,12 +127,12 @@ object Application extends Controller {
 
 
 
-  def getUserCommutes(id:Long) = Action{
+  def getUserCommutes(id:String) = Action{
 
-    val maybeUser:Option[User] = User.findById(id)
+    val maybeUser:Option[MongoUser] = MongoUser.findOneById(new ObjectId(id))
     maybeUser match{
       case Some(user) => {
-        val commuteList:List[UserCommute] = UserCommute.findCommuteByUserId(id)
+        val commuteList:List[UserCommute] = Nil
         //Ok(Json.toJson(CommuteMapper.buildCommutes(commuteList)))
         Ok(Json.toJson(commuteList))
       }

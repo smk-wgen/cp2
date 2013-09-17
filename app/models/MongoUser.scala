@@ -19,7 +19,7 @@ import play.api.Play
  * Created by skunnumkal on 9/4/13.
  */
 case class MongoUser(@Key("_id") id: ObjectId = new ObjectId, username: String,title:String,linkedInId:String,
-                     imageUrl:String,addresses:List[MongoUserAddress] = Nil)
+                     imageUrl:String,addresses:List[MongoUserAddress] = Nil,commutes:List[MongoUserCommute] = Nil)
 
 object MongoUser extends ModelCompanion[MongoUser, ObjectId]{
   val db:String = Play.current.configuration.getString("mongodb.default.db").getOrElse("my_db")
@@ -32,7 +32,7 @@ object MongoUser extends ModelCompanion[MongoUser, ObjectId]{
     println("The object is " + user.username  + " : id " + user.id.toString)
     val jsonObj = Json.obj(
       "id" -> user.id.toString , "username" -> user.username, "title" -> user.title, "linkedInId" -> user.linkedInId,
-      "imageUrl" -> user.imageUrl, "addresses" -> user.addresses
+      "imageUrl" -> user.imageUrl, "addresses" -> user.addresses , "commutes" -> user.commutes
     )
     jsonObj
   }

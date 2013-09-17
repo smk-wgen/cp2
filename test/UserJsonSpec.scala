@@ -1,4 +1,4 @@
-import models.{MongoUserAddress, MongoUser}
+import models.{MongoUserCommute, MongoUserAddress, MongoUser}
 import org.specs2.mutable.Specification
 import play.api.test.{FakeRequest, FakeApplication}
 import play.api.test.Helpers._
@@ -26,9 +26,11 @@ class UserJsonSpec extends Specification{
       running(FakeApplication()) {
 
         val addresses:List[MongoUserAddress] = List(new MongoUserAddress("myhome", " 108 71st street guttenberg nj 07093"))
-        val user:MongoUser = MongoUser(new ObjectId,"adam"," In the know","adx9ff","./views/images/favicon.png",addresses)
+        val commutes:List[MongoUserCommute] = List(new MongoUserCommute(new ObjectId,"label1",56,76,"a","b",new ObjectId))
+        val user:MongoUser = MongoUser(new ObjectId,"adam"," In the know","adx9ff","./views/images/favicon.png",addresses,commutes)
         val json = MongoUser.object2Json(user)
         //val json = Json.fromJson(jsonStr)
+        println(json)
         json.\("username").as[String] must equalTo(user.username)
 
       }

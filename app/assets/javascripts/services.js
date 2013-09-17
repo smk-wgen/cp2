@@ -79,25 +79,22 @@ servicesModule.factory('commuteService',function($http,$q){
          userCommutes : [],
          getUserCommutes : function(id){
              var deferredCommutes = $q.defer();
-             deferredCommutes.resolve(aCommuteService.userCommutes);
-//             $http.get('/usercommutes/'+id).then(function(response){
-//                 deferredCommutes.resolve(response.data);
-//             },function(errResponse){
-//                 console.error(errResponse);
-//                 deferredCommutes.reject(errResponse.data);
-//             });
+             $http.get('/usercommutes/'+id).then(function(response){
+                 deferredCommutes.resolve(response.data);
+             },function(errResponse){
+                 console.error(errResponse);
+                 deferredCommutes.reject(errResponse.data);
+             });
              return deferredCommutes.promise;
          } ,
          addUserCommute : function(commute){
              var deferredCommute = $q.defer();
 
              $http.post("/usercommute", commute).then(function(response){
-                 commute.id = aCommuteService.userCommutes.length+1;
-                 aCommuteService.userCommutes.push(commute);
-                 deferredCommute.resolve(commute);
-                 //var aCommute = response.data;
-                 //aCommuteService.userCommutes.push(aCommute);
-                 //deferredCommute.resolve(aCommute);
+
+                 var aCommute = response.data;
+                 aCommuteService.userCommutes.push(aCommute);
+                 deferredCommute.resolve(aCommute);
              },function(errResponse){
                  console.error(errResponse);
                  deferredCommute.reject(errResponse.data);
