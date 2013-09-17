@@ -10,7 +10,7 @@ GET         /usercommutes/:id                 controllers.Application.getUserCom
 GET         /commutematches/:id               controllers.Prototype.getCommuteMatches(id:Long)
 
 POST        /user                             controllers.Application.createOrGetUser
-POST        /address                          controllers.Prototype.postAddress
+POST        /address/:id                          controllers.Application.postAddress(id:String)
 POST        /usercommute                      controllers.Prototype.postCommute
 
 POST       /connect                           controllers.Application.connect

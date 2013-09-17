@@ -2,7 +2,7 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import models.{MongoUser, UserCommute, UserAddress, User}
+import models._
 import play.api.libs.json._
 import services.MatchingService
 import mappers.CommuteMapper
@@ -10,6 +10,7 @@ import play.api.Play
 import play.api.db.DB
 import anorm._
 import play.api.Play.current
+import com.mongodb.casbah.Imports._
 
 import scala.Some
 
@@ -39,11 +40,19 @@ object Application extends Controller {
       valid = (user => {
 
             val aUser:MongoUser = MongoUser.findOneByLinkedinId(user.linkedInId).getOrElse(
-               MongoUser.create(user)
+
+             MongoUser.create(user)
+
+//             maybeUser match {
+//               case None => BadRequest(" Semothing went wrong")
+//               case Some(dbUser) => dbUser
+//             }
             )
-            val userJson = MongoUser.object2Json(user)
-            System.out.println("Json User" + userJson)
-            Ok(userJson)
+
+        val userJson = MongoUser.object2Json(aUser)
+        System.out.println("Json User" + userJson)
+        Ok(userJson)
+
 
       }),
       invalid = (e => {
@@ -54,7 +63,8 @@ object Application extends Controller {
     }
 
   def getUserAddresses(id:String) = Action {
-    val maybeUser:Option[MongoUser] = MongoUser.findOneById(id)
+
+    val maybeUser:Option[MongoUser] = MongoUser.findOneById(new ObjectId(id))
     maybeUser match {
       case Some(user) => {
              val userAddresses = user.addresses
@@ -67,24 +77,23 @@ object Application extends Controller {
 
 
 
-//    def postAddress = Action(parse.json) {req =>
-//      val json = req.body
-//      System.out.println("Json is " + json)
-//      val label = json.\("label").as[String]
-//      val addressStr = json.\("address").as[String]
-//      val userId = json.\("user").as[String]
-//
-//      val maybeUser:Option[MongoUser] = MongoUser.findOneById(userId)
-//      maybeUser match {
-//        case Some(user) => {
-//           MongoUser.addUserAddress(user.id,label,addressStr)
-//          Ok("Done")
-//        }
-//        case None => {
-//          BadRequest("Detected error")
-//        }
-//        }
-//      }
+    def postAddress(id:String) = Action(parse.json) {req =>
+      val json = req.body
+      System.out.println("Json is " + json)
+      val label = json.\("label").as[String]
+      val addressStr = json.\("address").as[String]
+
+      val maybeUserAddr:Option[MongoUserAddress] = MongoUser.addUserAddress(id,label,addressStr)
+      maybeUserAddr match {
+        case Some(address) => {
+
+          Ok(Json.toJson(address))
+        }
+        case None => {
+          BadRequest("Detected error..didnt find user or address add went wrong")
+        }
+        }
+      }
 
 
     def postCommute = Action(parse.json){ req =>

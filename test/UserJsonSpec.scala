@@ -28,7 +28,7 @@ class UserJsonSpec extends Specification{
         val addresses:List[MongoUserAddress] = List(new MongoUserAddress("myhome", " 108 71st street guttenberg nj 07093"))
         val user:MongoUser = MongoUser(new ObjectId,"adam"," In the know","adx9ff","./views/images/favicon.png",addresses)
         val json = MongoUser.object2Json(user)
-        println(json)
+        //val json = Json.fromJson(jsonStr)
         json.\("username").as[String] must equalTo(user.username)
 
       }

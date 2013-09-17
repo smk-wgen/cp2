@@ -15,7 +15,7 @@ function AddressController($scope,addressService,userService){
     $scope.currentUser = undefined;
 
     var getAddresses = function(id){
-
+        console.log("Calling getAddresses for id=",id);
         var addressListPromise = addressService.getUserAddresses(id);
         addressListPromise.then(function(response){
 
@@ -54,7 +54,7 @@ function AddressController($scope,addressService,userService){
             label : $scope.label,
             address : $scope.addressString
         };
-        var promise = addressService.addUserAddress(addressPostJson);
+        var promise = addressService.addUserAddress(addressPostJson,user.id);
         promise.then(function(response){
              $scope.isAddressModalOpen = false;
              $scope.addresses.push(response);

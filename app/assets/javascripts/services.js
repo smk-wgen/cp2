@@ -43,9 +43,9 @@ servicesModule.factory('addressService',function($http,$q){
     var anAddressService = {
              userAddresses : [],
              getUserAddresses: function(id){
-                 //Temp hack for prototype
+                 if(id == undefined)
+                   return;
                  var deferredAddresses = $q.defer();
-                 //deferredAddresses.resolve(anAddressService.userAddresses);
                  $http.get('/addresses/'+id).then(function(response){
                       anAddressService.userAddresses = response.data;
                       deferredAddresses.resolve(response.data);
@@ -56,17 +56,14 @@ servicesModule.factory('addressService',function($http,$q){
                  return deferredAddresses.promise;
 
              },
-             addUserAddress : function(address){
+             addUserAddress : function(address,userId){
                  console.log("Create address payload",address);
                  var deferredAddress = $q.defer();
-                 $http.post("/address", address).then(function(response){
-                         //Temp hack for prototype
-                         address.id = anAddressService.userAddresses.length+1;
-                         anAddressService.userAddresses.push(address)
-                         deferredAddress.resolve(address)
-                         //var addedAddress = response.data;
-                         //anAddressService.userAddresses.push(addedAddress);
-                         //deferredAddress.resolve(addedAddress);
+                 $http.post("/address/"+userId, address).then(function(response){
+                         var address = response.data;
+
+                         anAddressService.userAddresses.push(address);
+                         deferredAddress.resolve(address);
                      },
                      function(errResponse){
                          console.error(errResponse.data);
