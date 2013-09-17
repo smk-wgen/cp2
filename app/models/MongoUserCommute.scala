@@ -22,12 +22,6 @@ object MongoUserCommute {
     "userId" -> aCommute.userId.toString)
     json
   }
-  def object2json(id:String,label:String,startTime:Int,endTime:Int,startAddress:String,endAddress:String,userId:String) = {
-    val json = Json.obj("id" -> id, "label" -> label, "startTime" -> startTime,
-      "endTime" -> endTime, "startAddress" -> startAddress, "endAddress" -> endAddress,
-      "userId" -> userId)
-    json
-  }
   implicit val mucReads = (
     (__ \ "label").read[String] and
       (__ \ "startTime").read(UserAddress.StringToIntReader) and
