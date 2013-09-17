@@ -140,7 +140,7 @@ object Application extends Controller {
      commute match{
        case Some(dbCommute) => {
          val allCommutes:List[UserCommute] = UserCommute.findAllCommutes
-         val matchingCommutes:List[UserCommute] = MatchingService.getMatches(dbCommute,allCommutes)
+         val matchingCommutes:List[UserCommute] = Nil
           Ok(views.html.commutelist(CommuteMapper.buildCommutes(matchingCommutes),dbCommute.user))
          //Ok(Json.toJson(matchingCommutes))
        }

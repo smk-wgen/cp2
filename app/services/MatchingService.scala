@@ -1,21 +1,23 @@
 package services
 
-import models.UserCommute
-import strategy.{MatchingStrategy, DefaultMatchingStrategy}
+import models.{MongoUserCommute, UserCommute}
+import strategy._
 
 /**
  * Created by skunnumkal on 7/11/13.
  */
 object MatchingService {
 
-  val strategy:MatchingStrategy = new DefaultMatchingStrategy()
-  def getMatches(usersCommute:UserCommute,otherCommutes:List[UserCommute]):List[UserCommute] = {
-      val matches:List[UserCommute] = otherCommutes.filter(commute => {
-        commute.id != usersCommute.id   && usersCommute.user != commute.user &&
+  val strategy:MatchingStrategy = new MongoMatchingStrategy()
+  def getMatches(usersCommute:MongoUserCommute,otherCommutes:List[MongoUserCommute]):List[MongoUserCommute] = {
+      val matches:List[MongoUserCommute] = otherCommutes.filter(commute => {
+        !commute.id.equals(usersCommute.id)   && !commute.userId.equals(usersCommute.userId) &&
           strategy.isMatch(commute,usersCommute)
 
       })
       matches
   }
+
+
 
 }

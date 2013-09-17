@@ -18,7 +18,7 @@ public class GMapHelper {
     // URL prefix to the geocoder
     private static final String GEOCODER_REQUEST_PREFIX_FOR_JSON = "http://maps.google.com/maps/api/geocode/json";
     private static final String encoding = "UTF-8";
-    public static String getAddressJson(UserAddress address){
+    public static String getAddressJson(String address){
         String formattedString = formatAddress(address);
         // prepare a URL to the geocoder
         URL url = null;
@@ -43,22 +43,8 @@ public class GMapHelper {
        return "";
     }
 
-    private static String formatAddress(UserAddress address){
-        StringBuffer sb = new StringBuffer();
-        sb.append(address.line1().replace(' ','+'));
-        sb.append('+');
-        if(!address.line2().isEmpty()){
-            sb.append(address.line2().replace(' ','+'));
-            sb.append('+');
-        }
 
-        sb.append(address.city().replace(' ','+'));
-        sb.append('+');
-        sb.append(address.state().replace(' ','+'));
-        sb.append('+');
-        sb.append(address.zip());
-        System.out.println("AddressString =" + sb.toString());
-        return sb.toString();
-
+    private static String formatAddress(String address){
+        return address.replace(' ', '+');
     }
 }
