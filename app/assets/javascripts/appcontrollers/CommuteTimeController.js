@@ -85,16 +85,16 @@ function CommuteTimeController($scope,addressService,$http,userService,commuteSe
         $scope.endTimeAsInt = timeInterval.end;
         console.log("Stats",$scope.startTime,$scope.endTime,$scope.startaddress,$scope.startTimeAsInt,$scope.endTimeAsInt);
         var commute = {
-         id: user.name,
+         id: '',
          label : $scope.label,
-         startAddress: $scope.startaddress.id,
-         endAddress: $scope.endaddress.id,
+         startAddress: $scope.startaddress.address,
+         endAddress: $scope.endaddress.address,
          startTime: $scope.startTimeAsInt,
          endTime: $scope.endTimeAsInt ,
-         user : user.id
+         userId : user.id
         };
         console.log(commute);
-        var promisedCommute = commuteService.addUserCommute(commute);
+        var promisedCommute = commuteService.addUserCommute(commute,user.id);
 
         promisedCommute.then(function(response){
                 console.log(response);

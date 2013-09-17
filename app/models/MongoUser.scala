@@ -67,6 +67,30 @@ object MongoUser extends ModelCompanion[MongoUser, ObjectId]{
     }
   }
 
+  def addUserCommute(id:String,commute:MongoUserCommute):Option[MongoUserCommute] = {
+    val maybeUser:Option[MongoUser] = findOneById(new ObjectId(id))
+    maybeUser match {
+      case Some(user) => {
+        val aCommute:MongoUserCommute = commute.copy(userId = user.id)
+        val newUser = user.copy(commutes = user.commutes :+ aCommute)
+        println("Commutes #size" + newUser.commutes.size)
+        //val result = MongoUser.update(MongoDBObject("_id" -> user.id),newUser,false,false)
+        val cr = MongoUser.save(newUser,WriteConcern.Safe)
+        if(cr.getLastError().ok())
+        {
+          Some(aCommute)
+        }
+        else{
+          None
+        }
+      }
+      case None => { println("Didnt find user to add commute")
+        throw new RuntimeException("Not found")}
+    }
+
+
+  }
+
 
   implicit val userReads = (
       (__ \ "username").read[String] and

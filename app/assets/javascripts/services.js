@@ -87,10 +87,10 @@ servicesModule.factory('commuteService',function($http,$q){
              });
              return deferredCommutes.promise;
          } ,
-         addUserCommute : function(commute){
+         addUserCommute : function(commute,id){
              var deferredCommute = $q.defer();
 
-             $http.post("/usercommute", commute).then(function(response){
+             $http.post("/usercommute/"+id, commute).then(function(response){
 
                  var aCommute = response.data;
                  aCommuteService.userCommutes.push(aCommute);

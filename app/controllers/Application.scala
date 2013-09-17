@@ -96,18 +96,42 @@ object Application extends Controller {
       }
 
 
-    def postCommute = Action(parse.json){ req =>
-        val json = req.body
-        json.validate[UserCommute].fold(
-        valid = (validCommute => {
-          val dbCommute = UserCommute.create(validCommute)
-          dbCommute match{
-            case Some(storedCommute) => Ok(Json.toJson(storedCommute))
-            case None => ServiceUnavailable("Internal Server error")
+    def postCommute(id:String) = Action(parse.json){ req =>
+        val maybeUser:Option[MongoUser] = MongoUser.findOneById(new ObjectId(id))
+        maybeUser match {
+          case Some(user) => {
+                   val json = req.body
+                   json.validate[MongoUserCommute].fold(
+                     valid = (validCommute => {
+                       val addresses:List[MongoUserAddress] = user.addresses
+                       val mbStartAddress:Option[MongoUserAddress] = addresses.find(cur => cur.address.equals(validCommute.startAddress))
+                       val mbEndAddress:Option[MongoUserAddress] = addresses.find(cur => cur.address.equals(validCommute.endAddress))
+                       mbStartAddress match {
+                         case Some(strtAddr) => {
+                            mbEndAddress match {
+                              case Some(endAddr) => {
+                                 val commute = new MongoUserCommute(new ObjectId,validCommute.label,validCommute.startTime,validCommute.endTime,strtAddr.address,endAddr.address, user.id)
+                                 val dbCommute:MongoUserCommute = MongoUser.addUserCommute(id,commute).get
+                                 Ok(Json.toJson(dbCommute))
+
+
+                              }
+                              case None => { BadRequest("Didnt find valid end address")}
+                            }
+                         }
+                         case None => { BadRequest("Didnt find valid start address")}
+                       }
+
+                     }),
+                     invalid = (e => {BadRequest("Detected error " + JsError.toFlatJson(e))})
+                   )
+
+
           }
-        }),
-        invalid = (e => {BadRequest("Detected error " + JsError.toFlatJson(e))})
-        )
+          case None => BadRequest("Didnt find user to add commute");
+        }
+
+
     }
 
     def getCommuteMatches(commuteId:Long) = Action {

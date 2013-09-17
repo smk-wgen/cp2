@@ -11,13 +11,13 @@ case class MongoUserAddress(address:String,label:String)
 object MongoUserAddress{
 
   implicit val muaReads = (
-    (__ \ "label").read[String] and
-      (__ \ "address").read[String]
+    (__ \ "address").read[String] and
+      (__ \ "label").read[String]
     )(MongoUserAddress.apply _)
 
   implicit val muaWrites = (
-    (__ \ "label").write[String] and
-      (__  \ "address").write[String]
+    (__ \ "address").write[String] and
+      (__  \ "label").write[String]
     )(unlift(MongoUserAddress.unapply))
 
 
