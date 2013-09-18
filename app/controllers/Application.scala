@@ -134,15 +134,15 @@ object Application extends Controller {
 
     }
 
-    def getCommuteMatches(commuteId:Long) = Action {
+    def getCommuteMatches(commuteId:String) = Action {
 
-     val commute:Option[UserCommute] = UserCommute.findById(commuteId)
+     val commute:Option[MongoUserCommute] = MongoUserCommute.findById(commuteId)
      commute match{
        case Some(dbCommute) => {
-         val allCommutes:List[UserCommute] = UserCommute.findAllCommutes
-         val matchingCommutes:List[UserCommute] = Nil
-          Ok(views.html.commutelist(CommuteMapper.buildCommutes(matchingCommutes),dbCommute.user))
-         //Ok(Json.toJson(matchingCommutes))
+         val allCommutes:List[MongoUserCommute] = MongoUserCommute.findAll()
+         val matchingCommutes:List[MongoUserCommute] = MatchingService.getMatches(dbCommute,allCommutes)
+          //Ok(views.html.commutelist(CommuteMapper.buildCommutes(matchingCommutes),dbCommute.user))
+         Ok(Json.toJson(matchingCommutes))
        }
        case _ => BadRequest("Didnt find the commute record")
      }
@@ -156,7 +156,7 @@ object Application extends Controller {
     val maybeUser:Option[MongoUser] = MongoUser.findOneById(new ObjectId(id))
     maybeUser match{
       case Some(user) => {
-        val commuteList:List[UserCommute] = Nil
+        val commuteList:List[MongoUserCommute] = user.commutes
         //Ok(Json.toJson(CommuteMapper.buildCommutes(commuteList)))
         Ok(Json.toJson(commuteList))
       }

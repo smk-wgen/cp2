@@ -37,7 +37,6 @@ object MongoUser extends ModelCompanion[MongoUser, ObjectId]{
     jsonObj
   }
   def findOneByLinkedinId(linkedinId:String):Option[MongoUser] = dao.findOne(MongoDBObject("linkedInId" -> linkedinId))
-//
 
 
   def addUserAddress(id:String,label:String,address:String):Option[MongoUserAddress] = {

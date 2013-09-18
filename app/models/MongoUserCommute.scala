@@ -50,5 +50,41 @@ object MongoUserCommute {
       JsString(id.toString)
     }
   }
+
+  def findAll():List[MongoUserCommute] = {
+         val allUsers:List[MongoUser] = MongoUser.findAll().toList
+         val commutes = accumulate(allUsers,List[MongoUserCommute]())
+         commutes
+
+  }
+  private def accumulate(users:List[MongoUser],acc:List[MongoUserCommute]):List[MongoUserCommute] = {
+    if(users.isEmpty){
+      acc
+    }
+    else{
+      val user = users.head
+      accumulate(users.tail,acc ++ user.commutes)
+    }
+
+  }
+
+  def findById(id:String):Option[MongoUserCommute] = {
+
+    val allUsers:List[MongoUser] = MongoUser.findAll().toList
+    val commuteId = new ObjectId(id)
+    println("Searching for commute iwth id=" + id)
+    val matchingCommutes:List[MongoUserCommute] = for( user <- allUsers;
+         commute <- user.commutes;
+         if(commute.id.equals(commuteId)))yield(commute)
+
+    matchingCommutes.size match{
+      case 0 => None
+      case 1 => Some(matchingCommutes.head)
+      case _ => throw new RuntimeException("Found duplicate commutes in db")
+    }
+
+
+
+  }
 }
 
