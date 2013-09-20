@@ -25,20 +25,20 @@ class ApplicationSpec extends Specification {
     
 
 
-//     "be able to store and retrieve MongoUser" in {
-//       running(FakeApplication(additionalConfiguration = Map("mongodb.default.user" -> "theadmin",
-//         "mongodb.default.password" -> "12345" ,
-//         "mongodb.default.db" -> "unit-test"))){
-//         val aUser = new MongoUser(new ObjectId,"a Name","Birchborx","linked","image",Nil)
-//         val dbUser:MongoUser = MongoUser.create(aUser)
-//         val maybe = MongoUser.findOneById(dbUser.id)
-//         maybe match {
-//           case Some(user) => {println("Found a user iwth id" + user.id)}
-//           case None => {assert(false)}
-//         }
-//       }
-//
-//     }
+     "be able to store and retrieve MongoUser" in {
+       running(FakeApplication(additionalConfiguration = Map("mongodb.default.user" -> "theadmin",
+         "mongodb.default.password" -> "12345" ,
+         "mongodb.default.db" -> "unit-test"))){
+         val aUser = new MongoUser(new ObjectId,"a Name","Birchborx","linked","image",Nil)
+         val dbUser:MongoUser = MongoUser.create(aUser)
+         val maybe = MongoUser.findOneById(dbUser.id)
+         maybe match {
+           case Some(user) => {println("Found a user iwth id" + user.id)}
+           case None => {assert(false)}
+         }
+       }
+
+     }
 
   }
 }
