@@ -2,8 +2,10 @@
  * Created by skunnumkal on 7/18/13.
  */
 function LinkedInController($scope,userService){
+    console.log("LinkedInController..loading");
     $scope.authenticated = false;
     $scope.userName = "Someone";
+    $scope.bUser = aUser || undefined;
     $scope.setAuthenticatedUser = function(liUser){
         $scope.authenticated = true;
 
@@ -26,6 +28,12 @@ function LinkedInController($scope,userService){
 
 
     };
+
+    if($scope.bUser != undefined && $scope.bUser != null){
+        console.log("bUser is not null");
+        $scope.authenticated = true;
+        userService.currentUser = $scope.bUser;
+    }
 
 
 

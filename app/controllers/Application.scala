@@ -18,8 +18,30 @@ import scala.Some
 object Application extends Controller {
   
   def index = Action {
-    val apiKey = Play.current.configuration.getString("linkedin.api.key").getOrElse("91zpl9j92hr9")
-    Ok(views.html.main("LandingPage",apiKey))
+
+    request =>
+      val apiKey = Play.current.configuration.getString("linkedin.api.key").getOrElse("91zpl9j92hr9")
+      request.session.get("connected").map { linkedInId =>
+        val maybeUser = MongoUser.findOneByLinkedinId(linkedInId)
+        maybeUser match {
+          case Some(user) =>  {
+            println("Found user in session")
+            val js = Json.obj("username" -> user.username,"title" -> user.title, "linkedInId" -> user.linkedInId,"imageUrl" -> user.imageUrl)
+            //val jsStr:String = Json.stringify(js)
+            println("Stringified " + user.toString)
+            Ok(views.html.main("LandingPage",apiKey,user)) }
+          case None =>    {
+            println("Didnt find user in session")
+            Ok(views.html.main("LandingPage",apiKey,null))   }
+        }
+
+      }.getOrElse {
+        println("Didnt find user in session")
+        Ok(views.html.main("LandingPage",apiKey,null))
+        //Unauthorized("Oops, you are not connected")
+      }
+
+
     //Ok(views.html.error())
   }
 
@@ -50,8 +72,11 @@ object Application extends Controller {
             )
 
         val userJson = MongoUser.object2Json(aUser)
+
         System.out.println("Json User" + userJson)
-        Ok(userJson)
+        Ok(userJson).withSession(
+          "connected" -> user.linkedInId
+        )
 
 
       }),

@@ -1,4 +1,4 @@
-@(title: String,key:String)
+@(title: String,key:String,user:MongoUser)
 <!DOCTYPE html>
 
 <html ng-app="profiler">
@@ -19,7 +19,17 @@
                  <h3 class="row-fluid"><a href="https://docs.google.com/forms/d/17kR4luzPJkVEsygwP6qOOuwXdygHjrsoQIPWGLcvokw/viewform">Feedback</a> </h3>
                  <div class="row-fluid" id="theDiv" ng-controller="LinkedInController">
 
-
+                     <script type="text/javascript">
+                     var aUser = null;
+                         @if(user !=null) {
+                             aUser = {username : "@user.username",
+                             id : "@user.id.toString",
+                             title :"@user.title",
+                             imageUrl : "@user.imageUrl",
+                             linkedInId : "@user.linkedInId" };
+                         }
+                     console.log(aUser);
+                     </script>
 
 
 
@@ -27,7 +37,7 @@
                      <div id="dashboardDiv"  ng-show="authenticated">
 
                          <div ng-include="'/assets/angular/profile.html'">
-                             Hello , {{userName}}
+
                          </div>
                      </div>
                  </div>
@@ -37,6 +47,7 @@
              </div>
 
          </div>
+        @if(user == null) {
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">
             api_key: @key
             onLoad: onLinkedInLoad
@@ -45,6 +56,9 @@
         <script type="in/Login">
         </script>
         <script type="text/javascript">
+
+
+
             function onLinkedInLoad(){
                    console.log("LinkedIn script has loaded");
                    IN.Event.on(IN, "auth", onLinkedInAuth);
@@ -67,6 +81,7 @@
             }
 
         </script>
+        }
 
 
 
