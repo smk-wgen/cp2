@@ -17,4 +17,7 @@ package object mongoContext {
     context.registerClassLoader(Play.classloader)
     context
   }
+  val mongoUri = current.configuration.getString("mongodb.default.uri").getOrElse {
+    sys.error("mongodb.uri could not be resolved")
+  }
 }

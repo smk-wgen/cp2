@@ -5,6 +5,7 @@ import com.novus.salat.global._
 import com.novus.salat.annotations._
 import com.mongodb.casbah.Imports._
 import com.novus.salat.dao._
+import com.mongodb.casbah.MongoURI
 
 
 import se.radley.plugin.salat._
@@ -18,6 +19,7 @@ case class Connection(@Key("_id") id: ObjectId = new ObjectId, fromId: ObjectId,
 
 object Connection extends ModelCompanion[Connection, ObjectId]{
   val db:String = Play.current.configuration.getString("mongodb.default.db").getOrElse("my_db")
-  val connectionsCollection = MongoConnection()(db)("connections")
+  println(db + " | " + mongoUri)
+  val connectionsCollection = MongoConnection(MongoURI(mongoUri))(db)("connections")
   val dao = new SalatDAO[Connection, ObjectId](collection = connectionsCollection) {}
 }

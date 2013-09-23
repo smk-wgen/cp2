@@ -5,6 +5,7 @@ import play.api.Play.current
 import com.novus.salat.global._
 import com.novus.salat.annotations._
 import com.mongodb.casbah.Imports._
+import com.mongodb.casbah.MongoURI
 
 
 import se.radley.plugin.salat._
@@ -22,8 +23,9 @@ case class MongoUser(@Key("_id") id: ObjectId = new ObjectId, username: String,t
                      imageUrl:String,addresses:List[MongoUserAddress] = Nil,commutes:List[MongoUserCommute] = Nil)
 
 object MongoUser extends ModelCompanion[MongoUser, ObjectId]{
+
   val db:String = Play.current.configuration.getString("mongodb.default.db").getOrElse("my_db")
-  val userCollection = MongoConnection()(db)("users")
+  val userCollection = MongoConnection(MongoURI(mongoUri))(db)("users")
   val dao = new SalatDAO[MongoUser, ObjectId](collection = userCollection) {}
 
   def json2Object(name:String,linkedInId:String,imageUrl:String,title:String) = new MongoUser(new ObjectId,name,title,linkedInId,imageUrl)

@@ -1,6 +1,6 @@
 package services
 
-import models.{MongoUserCommute, UserCommute}
+import models._
 import strategy._
 
 /**
