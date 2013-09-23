@@ -1,4 +1,4 @@
-@(commutes:List[UserCommuteView],curUserId:Long)
+@(connections:List[(MongoUser,MongoUserCommute)],curUserId:ObjectId)
 <!DOCTYPE html>
 <html>
     <head>
@@ -8,15 +8,24 @@
 
     </head>
     <body ng-app="connections">
-        <div ng-show="@commutes.length == 0">
+        <div ng-show="@connections.length == 0">
               Sorry we didnt find any matches
         </div>
-        <div ng-show="@commutes.length > 0" ng-controller="ConnectionController">
+        <script type="text/javascript">
+            var fromUserId = "@curUserId.toString";
+
+        </script>
+        <div ng-show="@connections.length > 0" ng-controller="ConnectionController">
            Your matches
 
             <ul>
-            @commutes.map { commute =>
-                <li> @commute.userName @commute.title <button ng-click="addConnection(@curUserId,@commute.userId,@commute.commuteId)" class="btn">Connect!</button> </li>
+            @connections.map { connection =>
+                <li>
+                    <script type="text/javascript">
+                        var commuteId = "@connection._2.id.toString";
+                        var toUserId = "@connection._1.id.toString";
+                    </script>
+                    @connection._1.username @connection._1.title <button ng-click="addConnection()" class="btn">Connect!</button> </li>
             }
             </ul>
         </div>

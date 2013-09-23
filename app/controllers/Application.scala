@@ -5,11 +5,11 @@ import play.api.mvc._
 import models._
 import play.api.libs.json._
 import services.MatchingService
-import mappers.CommuteMapper
 import play.api.Play
 import play.api.db.DB
 import anorm._
 import play.api.Play.current
+import mappers._
 import com.mongodb.casbah.Imports._
 
 import scala.Some
@@ -92,6 +92,7 @@ object Application extends Controller {
     val maybeUser:Option[MongoUser] = MongoUser.findOneById(new ObjectId(id))
     maybeUser match {
       case Some(user) => {
+             println("Got a user " + user)
              val userAddresses = user.addresses
              Ok(Json.toJson(userAddresses))
       }
@@ -166,8 +167,10 @@ object Application extends Controller {
        case Some(dbCommute) => {
          val allCommutes:List[MongoUserCommute] = MongoUserCommute.findAll()
          val matchingCommutes:List[MongoUserCommute] = MatchingService.getMatches(dbCommute,allCommutes)
-          //Ok(views.html.commutelist(CommuteMapper.buildCommutes(matchingCommutes),dbCommute.user))
-         Ok(Json.toJson(matchingCommutes))
+         //val commuteViews:List[JsValue] = CommuteMapper.mapCommutes(matchingCommutes)
+         val connections:List[(MongoUser,MongoUserCommute)] = CommuteMapper.mapConnections(matchingCommutes)
+          Ok(views.html.commutelist(connections,dbCommute.userId))
+         //Ok(Json.toJson(commuteViews))
        }
        case _ => BadRequest("Didnt find the commute record")
      }
@@ -194,23 +197,11 @@ object Application extends Controller {
 
   def connect = Action(parse.json){  req =>
     val json = req.body
-    val fromUser = json.\("fromUserId").as[Long]
-    val toUser = json.\("toUserId").as[Long]
-    val commuteId = json.\("commuteId").as[Long]
-
-    DB.withConnection {
-      implicit connection =>
-        SQL("insert into user_connection(from_user,to_user, commute_id) " +
-          "values ({from_user},{to_user}, {commute_id});").on(
-          'from_user -> fromUser,
-          'to_user -> toUser,
-          'commute_id -> commuteId
-
-
-        ).executeInsert()
-
-
-    }
+    val fromUser = json.\("fromUserId").as[String]
+    val toUser = json.\("toUserId").as[String]
+    val commuteId = json.\("commuteId").as[String]
+    val connection = new Connection(new ObjectId,new ObjectId(fromUser), new ObjectId(toUser), new ObjectId(commuteId))
+    Connection.insert(connection)
 
     Ok(Json.obj("message" -> "success"))
 
